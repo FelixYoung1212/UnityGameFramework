@@ -7,7 +7,7 @@
 
 using GameFramework;
 using GameFramework.Localization;
-using GameFramework.Resource;
+using GameFramework.Resource.Addressables;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -131,15 +131,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_LocalizationManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_LocalizationManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
-            }
-
+            m_LocalizationManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
             LocalizationHelperBase localizationHelper = Helper.CreateHelper(m_LocalizationHelperTypeName, m_CustomLocalizationHelper);
             if (localizationHelper == null)
             {
@@ -154,7 +146,7 @@ namespace UnityGameFramework.Runtime
 
             m_LocalizationManager.SetDataProviderHelper(localizationHelper);
             m_LocalizationManager.SetLocalizationHelper(localizationHelper);
-            m_LocalizationManager.Language = baseComponent.EditorResourceMode && baseComponent.EditorLanguage != Language.Unspecified ? baseComponent.EditorLanguage : m_LocalizationManager.SystemLanguage;
+            m_LocalizationManager.Language = baseComponent.EditorLanguage != Language.Unspecified ? baseComponent.EditorLanguage : m_LocalizationManager.SystemLanguage;
             if (m_CachedBytesSize > 0)
             {
                 EnsureCachedBytesSize(m_CachedBytesSize);

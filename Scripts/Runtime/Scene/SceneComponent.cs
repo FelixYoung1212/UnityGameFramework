@@ -6,7 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework;
-using GameFramework.Resource;
+using GameFramework.Resource.Addressables;
 using GameFramework.Scene;
 using System;
 using System.Collections.Generic;
@@ -87,13 +87,6 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
-            BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
-            if (baseComponent == null)
-            {
-                Log.Fatal("Base component is invalid.");
-                return;
-            }
-
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
             if (m_EventComponent == null)
             {
@@ -101,14 +94,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_SceneManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_SceneManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
-            }
+            m_SceneManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
         }
 
         /// <summary>

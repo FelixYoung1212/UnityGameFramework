@@ -7,7 +7,7 @@
 
 using GameFramework;
 using GameFramework.DataTable;
-using GameFramework.Resource;
+using GameFramework.Resource.Addressables;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -80,13 +80,6 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
-            BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
-            if (baseComponent == null)
-            {
-                Log.Fatal("Base component is invalid.");
-                return;
-            }
-
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
             if (m_EventComponent == null)
             {
@@ -94,15 +87,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_DataTableManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_DataTableManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
-            }
-
+            m_DataTableManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
             DataTableHelperBase dataTableHelper = Helper.CreateHelper(m_DataTableHelperTypeName, m_CustomDataTableHelper);
             if (dataTableHelper == null)
             {

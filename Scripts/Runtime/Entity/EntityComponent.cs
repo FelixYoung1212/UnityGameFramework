@@ -8,7 +8,7 @@
 using GameFramework;
 using GameFramework.Entity;
 using GameFramework.ObjectPool;
-using GameFramework.Resource;
+using GameFramework.Resource.Addressables;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -107,13 +107,6 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
-            BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
-            if (baseComponent == null)
-            {
-                Log.Fatal("Base component is invalid.");
-                return;
-            }
-
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
             if (m_EventComponent == null)
             {
@@ -121,15 +114,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_EntityManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_EntityManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
-            }
-
+            m_EntityManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
             m_EntityManager.SetObjectPoolManager(GameFrameworkEntry.GetModule<IObjectPoolManager>());
 
             EntityHelperBase entityHelper = Helper.CreateHelper(m_EntityHelperTypeName, m_CustomEntityHelper);

@@ -7,7 +7,7 @@
 
 using GameFramework;
 using GameFramework.ObjectPool;
-using GameFramework.Resource;
+using GameFramework.Resource.Addressables;
 using GameFramework.UI;
 using System.Collections.Generic;
 using UnityEngine;
@@ -183,13 +183,6 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
-            BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
-            if (baseComponent == null)
-            {
-                Log.Fatal("Base component is invalid.");
-                return;
-            }
-
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
             if (m_EventComponent == null)
             {
@@ -197,15 +190,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (baseComponent.EditorResourceMode)
-            {
-                m_UIManager.SetResourceManager(baseComponent.EditorResourceHelper);
-            }
-            else
-            {
-                m_UIManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
-            }
-
+            m_UIManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
             m_UIManager.SetObjectPoolManager(GameFrameworkEntry.GetModule<IObjectPoolManager>());
             m_UIManager.InstanceAutoReleaseInterval = m_InstanceAutoReleaseInterval;
             m_UIManager.InstanceCapacity = m_InstanceCapacity;
