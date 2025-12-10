@@ -7,7 +7,7 @@
 
 using GameFramework;
 using GameFramework.Config;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -19,11 +19,16 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Config")]
     public sealed class ConfigComponent : GameFrameworkComponent
     {
+        private const int DefaultPriority = 0;
+
         private IConfigManager m_ConfigManager = null;
         private EventComponent m_EventComponent = null;
 
         [SerializeField]
         private bool m_EnableLoadConfigUpdateEvent = false;
+
+        [SerializeField]
+        private bool m_EnableLoadConfigDependencyAssetEvent = false;
 
         [SerializeField]
         private string m_ConfigHelperTypeName = "UnityGameFramework.Runtime.DefaultConfigHelper";
@@ -77,10 +82,22 @@ namespace UnityGameFramework.Runtime
             {
                 m_ConfigManager.ReadDataUpdate += OnReadDataUpdate;
             }
+
+            if (m_EnableLoadConfigDependencyAssetEvent)
+            {
+                m_ConfigManager.ReadDataDependencyAsset += OnReadDataDependencyAsset;
+            }
         }
 
         private void Start()
         {
+            BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
+            if (baseComponent == null)
+            {
+                Log.Fatal("Base component is invalid.");
+                return;
+            }
+
             m_EventComponent = GameEntry.GetComponent<EventComponent>();
             if (m_EventComponent == null)
             {
@@ -88,7 +105,15 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_ConfigManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            if (baseComponent.EditorResourceMode)
+            {
+                m_ConfigManager.SetResourceManager(baseComponent.EditorResourceHelper);
+            }
+            else
+            {
+                m_ConfigManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
+            }
+
             ConfigHelperBase configHelper = Helper.CreateHelper(m_ConfigHelperTypeName, m_CustomConfigHelper);
             if (configHelper == null)
             {
@@ -153,6 +178,17 @@ namespace UnityGameFramework.Runtime
         public void ReadData(string configAssetName, object userData)
         {
             m_ConfigManager.ReadData(configAssetName, userData);
+        }
+
+        /// <summary>
+        /// 读取全局配置。
+        /// </summary>
+        /// <param name="configAssetName">全局配置资源名称。</param>
+        /// <param name="priority">加载全局配置资源的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void ReadData(string configAssetName, int priority, object userData)
+        {
+            m_ConfigManager.ReadData(configAssetName, priority, userData);
         }
 
         /// <summary>
@@ -362,6 +398,11 @@ namespace UnityGameFramework.Runtime
         private void OnReadDataUpdate(object sender, ReadDataUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, LoadConfigUpdateEventArgs.Create(e));
+        }
+
+        private void OnReadDataDependencyAsset(object sender, ReadDataDependencyAssetEventArgs e)
+        {
+            m_EventComponent.Fire(this, LoadConfigDependencyAssetEventArgs.Create(e));
         }
     }
 }

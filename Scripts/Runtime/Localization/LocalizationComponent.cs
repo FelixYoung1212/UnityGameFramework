@@ -7,7 +7,7 @@
 
 using GameFramework;
 using GameFramework.Localization;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -19,11 +19,16 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Localization")]
     public sealed class LocalizationComponent : GameFrameworkComponent
     {
+        private const int DefaultPriority = 0;
+
         private ILocalizationManager m_LocalizationManager = null;
         private EventComponent m_EventComponent = null;
 
         [SerializeField]
         private bool m_EnableLoadDictionaryUpdateEvent = false;
+
+        [SerializeField]
+        private bool m_EnableLoadDictionaryDependencyAssetEvent = false;
 
         [SerializeField]
         private string m_LocalizationHelperTypeName = "UnityGameFramework.Runtime.DefaultLocalizationHelper";
@@ -103,6 +108,11 @@ namespace UnityGameFramework.Runtime
             {
                 m_LocalizationManager.ReadDataUpdate += OnReadDataUpdate;
             }
+
+            if (m_EnableLoadDictionaryDependencyAssetEvent)
+            {
+                m_LocalizationManager.ReadDataDependencyAsset += OnReadDataDependencyAsset;
+            }
         }
 
         private void Start()
@@ -121,7 +131,15 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_LocalizationManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            if (baseComponent.EditorResourceMode)
+            {
+                m_LocalizationManager.SetResourceManager(baseComponent.EditorResourceHelper);
+            }
+            else
+            {
+                m_LocalizationManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
+            }
+
             LocalizationHelperBase localizationHelper = Helper.CreateHelper(m_LocalizationHelperTypeName, m_CustomLocalizationHelper);
             if (localizationHelper == null)
             {
@@ -136,7 +154,7 @@ namespace UnityGameFramework.Runtime
 
             m_LocalizationManager.SetDataProviderHelper(localizationHelper);
             m_LocalizationManager.SetLocalizationHelper(localizationHelper);
-            m_LocalizationManager.Language = baseComponent.EditorLanguage != Language.Unspecified ? baseComponent.EditorLanguage : m_LocalizationManager.SystemLanguage;
+            m_LocalizationManager.Language = baseComponent.EditorResourceMode && baseComponent.EditorLanguage != Language.Unspecified ? baseComponent.EditorLanguage : m_LocalizationManager.SystemLanguage;
             if (m_CachedBytesSize > 0)
             {
                 EnsureCachedBytesSize(m_CachedBytesSize);
@@ -187,6 +205,17 @@ namespace UnityGameFramework.Runtime
         public void ReadData(string dictionaryAssetName, object userData)
         {
             m_LocalizationManager.ReadData(dictionaryAssetName, userData);
+        }
+
+        /// <summary>
+        /// 读取字典。
+        /// </summary>
+        /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="priority">加载字典资源的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void ReadData(string dictionaryAssetName, int priority, object userData)
+        {
+            m_LocalizationManager.ReadData(dictionaryAssetName, priority, userData);
         }
 
         /// <summary>
@@ -750,6 +779,11 @@ namespace UnityGameFramework.Runtime
         private void OnReadDataUpdate(object sender, ReadDataUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, LoadDictionaryUpdateEventArgs.Create(e));
+        }
+
+        private void OnReadDataDependencyAsset(object sender, ReadDataDependencyAssetEventArgs e)
+        {
+            m_EventComponent.Fire(this, LoadDictionaryDependencyAssetEventArgs.Create(e));
         }
     }
 }

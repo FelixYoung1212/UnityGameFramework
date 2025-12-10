@@ -6,7 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 #if UNITY_5_3
 using GameFramework.Scene;
 #endif
@@ -25,12 +25,17 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Sound")]
     public sealed partial class SoundComponent : GameFrameworkComponent
     {
+        private const int DefaultPriority = 0;
+
         private ISoundManager m_SoundManager = null;
         private EventComponent m_EventComponent = null;
         private AudioListener m_AudioListener = null;
 
         [SerializeField]
         private bool m_EnablePlaySoundUpdateEvent = false;
+
+        [SerializeField]
+        private bool m_EnablePlaySoundDependencyAssetEvent = false;
 
         [SerializeField]
         private Transform m_InstanceRoot = null;
@@ -103,6 +108,11 @@ namespace UnityGameFramework.Runtime
                 m_SoundManager.PlaySoundUpdate += OnPlaySoundUpdate;
             }
 
+            if (m_EnablePlaySoundDependencyAssetEvent)
+            {
+                m_SoundManager.PlaySoundDependencyAsset += OnPlaySoundDependencyAsset;
+            }
+
             m_AudioListener = gameObject.GetOrAddComponent<AudioListener>();
 
 #if UNITY_5_4_OR_NEWER
@@ -125,7 +135,29 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
-            m_SoundManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            BaseComponent baseComponent = GameEntry.GetComponent<BaseComponent>();
+            if (baseComponent == null)
+            {
+                Log.Fatal("Base component is invalid.");
+                return;
+            }
+
+            m_EventComponent = GameEntry.GetComponent<EventComponent>();
+            if (m_EventComponent == null)
+            {
+                Log.Fatal("Event component is invalid.");
+                return;
+            }
+
+            if (baseComponent.EditorResourceMode)
+            {
+                m_SoundManager.SetResourceManager(baseComponent.EditorResourceHelper);
+            }
+            else
+            {
+                m_SoundManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
+            }
+
             SoundHelperBase soundHelper = Helper.CreateHelper(m_SoundHelperTypeName, m_CustomSoundHelper);
             if (soundHelper == null)
             {
@@ -307,7 +339,19 @@ namespace UnityGameFramework.Runtime
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName)
         {
-            return PlaySound(soundAssetName, soundGroupName, null, null, null);
+            return PlaySound(soundAssetName, soundGroupName, DefaultPriority, null, null, null);
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="priority">加载声音资源的优先级。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, int priority)
+        {
+            return PlaySound(soundAssetName, soundGroupName, priority, null, null, null);
         }
 
         /// <summary>
@@ -319,7 +363,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams)
         {
-            return PlaySound(soundAssetName, soundGroupName, playSoundParams, null, null);
+            return PlaySound(soundAssetName, soundGroupName, DefaultPriority, playSoundParams, null, null);
         }
 
         /// <summary>
@@ -331,7 +375,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName, Entity bindingEntity)
         {
-            return PlaySound(soundAssetName, soundGroupName, null, bindingEntity, null);
+            return PlaySound(soundAssetName, soundGroupName, DefaultPriority, null, bindingEntity, null);
         }
 
         /// <summary>
@@ -343,7 +387,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName, Vector3 worldPosition)
         {
-            return PlaySound(soundAssetName, soundGroupName, null, worldPosition, null);
+            return PlaySound(soundAssetName, soundGroupName, DefaultPriority, null, worldPosition, null);
         }
 
         /// <summary>
@@ -355,7 +399,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName, object userData)
         {
-            return PlaySound(soundAssetName, soundGroupName, null, null, userData);
+            return PlaySound(soundAssetName, soundGroupName, DefaultPriority, null, null, userData);
         }
 
         /// <summary>
@@ -363,12 +407,26 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="soundAssetName">声音资源名称。</param>
         /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="priority">加载声音资源的优先级。</param>
+        /// <param name="playSoundParams">播放声音参数。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, int priority, PlaySoundParams playSoundParams)
+        {
+            return PlaySound(soundAssetName, soundGroupName, priority, playSoundParams, null, null);
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="priority">加载声音资源的优先级。</param>
         /// <param name="playSoundParams">播放声音参数。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>声音的序列编号。</returns>
-        public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, object userData)
+        public int PlaySound(string soundAssetName, string soundGroupName, int priority, PlaySoundParams playSoundParams, object userData)
         {
-            return PlaySound(soundAssetName, soundGroupName, playSoundParams, null, userData);
+            return PlaySound(soundAssetName, soundGroupName, priority, playSoundParams, null, userData);
         }
 
         /// <summary>
@@ -376,12 +434,13 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="soundAssetName">声音资源名称。</param>
         /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="priority">加载声音资源的优先级。</param>
         /// <param name="playSoundParams">播放声音参数。</param>
         /// <param name="bindingEntity">声音绑定的实体。</param>
         /// <returns>声音的序列编号。</returns>
-        public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Entity bindingEntity)
+        public int PlaySound(string soundAssetName, string soundGroupName, int priority, PlaySoundParams playSoundParams, Entity bindingEntity)
         {
-            return PlaySound(soundAssetName, soundGroupName, playSoundParams, bindingEntity, null);
+            return PlaySound(soundAssetName, soundGroupName, priority, playSoundParams, bindingEntity, null);
         }
 
         /// <summary>
@@ -389,13 +448,14 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="soundAssetName">声音资源名称。</param>
         /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="priority">加载声音资源的优先级。</param>
         /// <param name="playSoundParams">播放声音参数。</param>
         /// <param name="bindingEntity">声音绑定的实体。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>声音的序列编号。</returns>
-        public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Entity bindingEntity, object userData)
+        public int PlaySound(string soundAssetName, string soundGroupName, int priority, PlaySoundParams playSoundParams, Entity bindingEntity, object userData)
         {
-            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, playSoundParams, PlaySoundInfo.Create(bindingEntity, Vector3.zero, userData));
+            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, priority, playSoundParams, PlaySoundInfo.Create(bindingEntity, Vector3.zero, userData));
         }
 
         /// <summary>
@@ -403,12 +463,13 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="soundAssetName">声音资源名称。</param>
         /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="priority">加载声音资源的优先级。</param>
         /// <param name="playSoundParams">播放声音参数。</param>
         /// <param name="worldPosition">声音所在的世界坐标。</param>
         /// <returns>声音的序列编号。</returns>
-        public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Vector3 worldPosition)
+        public int PlaySound(string soundAssetName, string soundGroupName, int priority, PlaySoundParams playSoundParams, Vector3 worldPosition)
         {
-            return PlaySound(soundAssetName, soundGroupName, playSoundParams, worldPosition, null);
+            return PlaySound(soundAssetName, soundGroupName, priority, playSoundParams, worldPosition, null);
         }
 
         /// <summary>
@@ -416,13 +477,14 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="soundAssetName">声音资源名称。</param>
         /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="priority">加载声音资源的优先级。</param>
         /// <param name="playSoundParams">播放声音参数。</param>
         /// <param name="worldPosition">声音所在的世界坐标。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>声音的序列编号。</returns>
-        public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Vector3 worldPosition, object userData)
+        public int PlaySound(string soundAssetName, string soundGroupName, int priority, PlaySoundParams playSoundParams, Vector3 worldPosition, object userData)
         {
-            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, playSoundParams, PlaySoundInfo.Create(null, worldPosition, userData));
+            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, priority, playSoundParams, PlaySoundInfo.Create(null, worldPosition, userData));
         }
 
         /// <summary>
@@ -585,6 +647,11 @@ namespace UnityGameFramework.Runtime
         private void OnPlaySoundUpdate(object sender, GameFramework.Sound.PlaySoundUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, PlaySoundUpdateEventArgs.Create(e));
+        }
+
+        private void OnPlaySoundDependencyAsset(object sender, GameFramework.Sound.PlaySoundDependencyAssetEventArgs e)
+        {
+            m_EventComponent.Fire(this, PlaySoundDependencyAssetEventArgs.Create(e));
         }
 
         private void OnLoadSceneSuccess(object sender, GameFramework.Scene.LoadSceneSuccessEventArgs e)

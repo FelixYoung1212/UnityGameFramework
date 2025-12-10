@@ -8,9 +8,6 @@
 using GameFramework;
 using GameFramework.Localization;
 using GameFramework.Resource;
-#if ADDRESSABLES_SUPPORT
-using GameFramework.Resource.Addressables;
-#endif
 using System;
 using UnityEngine;
 
@@ -26,6 +23,9 @@ namespace UnityGameFramework.Runtime
         private const int DefaultDpi = 96;  // default windows dpi
 
         private float m_GameSpeedBeforePause = 1f;
+
+        [SerializeField]
+        private bool m_EditorResourceMode = true;
 
         [SerializeField]
         private Language m_EditorLanguage = Language.Unspecified;
@@ -58,6 +58,21 @@ namespace UnityGameFramework.Runtime
         private bool m_NeverSleep = true;
 
         /// <summary>
+        /// 获取或设置是否使用编辑器资源模式（仅编辑器内有效）。
+        /// </summary>
+        public bool EditorResourceMode
+        {
+            get
+            {
+                return m_EditorResourceMode;
+            }
+            set
+            {
+                m_EditorResourceMode = value;
+            }
+        }
+
+        /// <summary>
         /// 获取或设置编辑器语言（仅编辑器内有效）。
         /// </summary>
         public Language EditorLanguage
@@ -70,6 +85,15 @@ namespace UnityGameFramework.Runtime
             {
                 m_EditorLanguage = value;
             }
+        }
+
+        /// <summary>
+        /// 获取或设置编辑器资源辅助器。
+        /// </summary>
+        public IResourceManager EditorResourceHelper
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -177,6 +201,12 @@ namespace UnityGameFramework.Runtime
             if (Utility.Converter.ScreenDpi <= 0)
             {
                 Utility.Converter.ScreenDpi = DefaultDpi;
+            }
+
+            m_EditorResourceMode &= Application.isEditor;
+            if (m_EditorResourceMode)
+            {
+                Log.Info("During this run, Game Framework will use editor resource files, which you should validate first.");
             }
 
             Application.targetFrameRate = m_FrameRate;
@@ -383,6 +413,12 @@ namespace UnityGameFramework.Runtime
             if (objectPoolComponent != null)
             {
                 objectPoolComponent.ReleaseAllUnused();
+            }
+
+            ResourceComponent resourceCompoent = GameEntry.GetComponent<ResourceComponent>();
+            if (resourceCompoent != null)
+            {
+                resourceCompoent.ForceUnloadUnusedAssets(true);
             }
         }
     }
