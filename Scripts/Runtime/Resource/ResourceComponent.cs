@@ -20,7 +20,6 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Resource")]
     public sealed class ResourceComponent : GameFrameworkComponent
     {
-        private const int DefaultPriority = 0;
         private IAddressablesManager m_ResourceManager = null;
         private bool m_ForceUnloadUnusedAssets = false;
         private bool m_PreorderUnloadUnusedAssets = false;
@@ -140,23 +139,13 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 检查资源是否存在。
-        /// </summary>
-        /// <param name="assetName">要检查资源的名称。</param>
-        /// <returns>检查资源是否存在的结果。</returns>
-        public HasAssetResult HasAsset(string assetName)
-        {
-            return m_ResourceManager.HasAsset(assetName);
-        }
-
-        /// <summary>
         /// 异步加载资源。
         /// </summary>
         /// <param name="assetName">要加载资源的名称。</param>
         /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
         public void LoadAsset(string assetName, LoadAssetCallbacks loadAssetCallbacks)
         {
-            LoadAsset(assetName, DefaultPriority, loadAssetCallbacks, null);
+            LoadAsset(assetName, loadAssetCallbacks, null);
         }
 
         /// <summary>
@@ -166,29 +155,6 @@ namespace UnityGameFramework.Runtime
         /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
         /// <param name="userData">用户自定义数据。</param>
         public void LoadAsset(string assetName, LoadAssetCallbacks loadAssetCallbacks, object userData)
-        {
-            LoadAsset(assetName, DefaultPriority, loadAssetCallbacks, userData);
-        }
-
-        /// <summary>
-        /// 异步加载资源。
-        /// </summary>
-        /// <param name="assetName">要加载资源的名称。</param>
-        /// <param name="priority">加载资源的优先级。</param>
-        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
-        public void LoadAsset(string assetName, int priority, LoadAssetCallbacks loadAssetCallbacks)
-        {
-            LoadAsset(assetName, priority, loadAssetCallbacks, null);
-        }
-
-        /// <summary>
-        /// 异步加载资源。
-        /// </summary>
-        /// <param name="assetName">要加载资源的名称。</param>
-        /// <param name="priority">加载资源的优先级。</param>
-        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void LoadAsset(string assetName, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
         {
             if (string.IsNullOrEmpty(assetName))
             {
@@ -202,7 +168,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_ResourceManager.LoadAsset(assetName, priority, loadAssetCallbacks, userData);
+            m_ResourceManager.LoadAsset(assetName, loadAssetCallbacks, userData);
         }
 
         /// <summary>
@@ -212,39 +178,6 @@ namespace UnityGameFramework.Runtime
         public void UnloadAsset(object asset)
         {
             m_ResourceManager.UnloadAsset(asset);
-        }
-
-        /// <summary>
-        /// 异步加载二进制资源。
-        /// </summary>
-        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
-        /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
-        public void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks)
-        {
-            LoadBinary(binaryAssetName, loadBinaryCallbacks, null);
-        }
-
-        /// <summary>
-        /// 异步加载二进制资源。
-        /// </summary>
-        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
-        /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks, object userData)
-        {
-            if (string.IsNullOrEmpty(binaryAssetName))
-            {
-                Log.Error("Binary asset name is invalid.");
-                return;
-            }
-
-            if (!binaryAssetName.StartsWith("Assets/", StringComparison.Ordinal))
-            {
-                Log.Error("Binary asset name '{0}' is invalid.", binaryAssetName);
-                return;
-            }
-
-            m_ResourceManager.LoadBinary(binaryAssetName, loadBinaryCallbacks, userData);
         }
         
         /// <summary>

@@ -19,16 +19,11 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Localization")]
     public sealed class LocalizationComponent : GameFrameworkComponent
     {
-        private const int DefaultPriority = 0;
-
         private ILocalizationManager m_LocalizationManager = null;
         private EventComponent m_EventComponent = null;
 
         [SerializeField]
         private bool m_EnableLoadDictionaryUpdateEvent = false;
-
-        [SerializeField]
-        private bool m_EnableLoadDictionaryDependencyAssetEvent = false;
 
         [SerializeField]
         private string m_LocalizationHelperTypeName = "UnityGameFramework.Runtime.DefaultLocalizationHelper";
@@ -107,11 +102,6 @@ namespace UnityGameFramework.Runtime
             if (m_EnableLoadDictionaryUpdateEvent)
             {
                 m_LocalizationManager.ReadDataUpdate += OnReadDataUpdate;
-            }
-
-            if (m_EnableLoadDictionaryDependencyAssetEvent)
-            {
-                m_LocalizationManager.ReadDataDependencyAsset += OnReadDataDependencyAsset;
             }
         }
 
@@ -197,17 +187,6 @@ namespace UnityGameFramework.Runtime
         public void ReadData(string dictionaryAssetName, object userData)
         {
             m_LocalizationManager.ReadData(dictionaryAssetName, userData);
-        }
-
-        /// <summary>
-        /// 读取字典。
-        /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="priority">加载字典资源的优先级。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void ReadData(string dictionaryAssetName, int priority, object userData)
-        {
-            m_LocalizationManager.ReadData(dictionaryAssetName, priority, userData);
         }
 
         /// <summary>
@@ -771,11 +750,6 @@ namespace UnityGameFramework.Runtime
         private void OnReadDataUpdate(object sender, ReadDataUpdateEventArgs e)
         {
             m_EventComponent.Fire(this, LoadDictionaryUpdateEventArgs.Create(e));
-        }
-
-        private void OnReadDataDependencyAsset(object sender, ReadDataDependencyAssetEventArgs e)
-        {
-            m_EventComponent.Fire(this, LoadDictionaryDependencyAssetEventArgs.Create(e));
         }
     }
 }
