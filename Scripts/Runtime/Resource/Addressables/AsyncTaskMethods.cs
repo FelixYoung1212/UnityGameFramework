@@ -1,4 +1,4 @@
-﻿#if !UNITASK_ADDRESSABLE_SUPPORT
+﻿#if !UNITASK_ADDRESSABLE_SUPPORT && ADDRESSABLE_SUPPORT
 
 using System;
 using System.Collections.Generic;
