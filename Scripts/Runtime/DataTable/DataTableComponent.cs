@@ -7,7 +7,7 @@
 
 using GameFramework;
 using GameFramework.DataTable;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -82,7 +82,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_DataTableManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            m_DataTableManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             DataTableHelperBase dataTableHelper = Helper.CreateHelper(m_DataTableHelperTypeName, m_CustomDataTableHelper);
             if (dataTableHelper == null)
             {

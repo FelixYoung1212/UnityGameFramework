@@ -8,7 +8,7 @@
 using GameFramework;
 using GameFramework.Entity;
 using GameFramework.ObjectPool;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -107,7 +107,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_EntityManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            m_EntityManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             m_EntityManager.SetObjectPoolManager(GameFrameworkEntry.GetModule<IObjectPoolManager>());
 
             EntityHelperBase entityHelper = Helper.CreateHelper(m_EntityHelperTypeName, m_CustomEntityHelper);

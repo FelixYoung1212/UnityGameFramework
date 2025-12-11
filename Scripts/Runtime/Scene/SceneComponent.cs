@@ -6,7 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 using GameFramework.Scene;
 using System;
 using System.Collections.Generic;
@@ -84,7 +84,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_SceneManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            m_SceneManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
         }
 
         /// <summary>

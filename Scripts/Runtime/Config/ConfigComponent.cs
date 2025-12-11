@@ -7,7 +7,7 @@
 
 using GameFramework;
 using GameFramework.Config;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -88,7 +88,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_ConfigManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            m_ConfigManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             ConfigHelperBase configHelper = Helper.CreateHelper(m_ConfigHelperTypeName, m_CustomConfigHelper);
             if (configHelper == null)
             {

@@ -109,7 +109,7 @@
             <param name="userData">用户自定义数据。</param>
             <returns>是否解析内容成功。</returns>
         </member>
-        <member name="M:GameFramework.DataProvider`1.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.DataProvider`1.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -146,7 +146,7 @@
             </summary>
             <typeparam name="T">数据提供者的持有者的类型。</typeparam>
         </member>
-        <member name="M:GameFramework.DataProviderCreator.Create``1(``0,GameFramework.Resource.Addressables.IAddressablesManager,GameFramework.IDataProviderHelper{``0})">
+        <member name="M:GameFramework.DataProviderCreator.Create``1(``0,GameFramework.Resource.IResourceManager,GameFramework.IDataProviderHelper{``0})">
             <summary>
             创建数据提供者。
             </summary>
@@ -4576,7 +4576,7 @@
             关闭并清理全局配置管理器。
             </summary>
         </member>
-        <member name="M:GameFramework.Config.ConfigManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Config.ConfigManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -4784,7 +4784,7 @@
             获取缓冲二进制流的大小。
             </summary>
         </member>
-        <member name="M:GameFramework.Config.IConfigManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Config.IConfigManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -5593,7 +5593,7 @@
             清空所有数据表行。
             </summary>
         </member>
-        <member name="M:GameFramework.DataTable.DataTableBase.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.DataTable.DataTableBase.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -5642,7 +5642,7 @@
             关闭并清理数据表管理器。
             </summary>
         </member>
-        <member name="M:GameFramework.DataTable.DataTableManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.DataTable.DataTableManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -6193,7 +6193,7 @@
             获取缓冲二进制流的大小。
             </summary>
         </member>
-        <member name="M:GameFramework.DataTable.IDataTableManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.DataTable.IDataTableManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -7682,7 +7682,7 @@
             </summary>
             <param name="objectPoolManager">对象池管理器。</param>
         </member>
-        <member name="M:GameFramework.Entity.EntityManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Entity.EntityManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -8508,7 +8508,7 @@
             </summary>
             <param name="objectPoolManager">对象池管理器。</param>
         </member>
-        <member name="M:GameFramework.Entity.IEntityManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Entity.IEntityManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -10966,7 +10966,7 @@
             获取缓冲二进制流的大小。
             </summary>
         </member>
-        <member name="M:GameFramework.Localization.ILocalizationManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Localization.ILocalizationManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -11737,7 +11737,7 @@
             关闭并清理本地化管理器。
             </summary>
         </member>
-        <member name="M:GameFramework.Localization.LocalizationManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Localization.LocalizationManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -15427,78 +15427,12 @@
             <param name="procedureType">要获取的流程类型。</param>
             <returns>要获取的流程。</returns>
         </member>
-        <member name="T:GameFramework.Resource.Addressables.AddressablesManager">
+        <member name="T:GameFramework.Resource.IResourceLoader">
             <summary>
-            资源管理器
+            资源加载器接口。
             </summary>
         </member>
-        <member name="T:GameFramework.Resource.Addressables.AddressablesManager.AddressablesLoader">
-            <summary>
-            加载资源器
-            </summary>
-        </member>
-        <member name="M:GameFramework.Resource.Addressables.AddressablesManager.AddressablesLoader.#ctor(GameFramework.Resource.Addressables.AddressablesManager)">
-            <summary>
-            初始化加载资源器的新实例。
-            </summary>
-            <param name="resourceManager">资源管理器。</param>
-        </member>
-        <member name="M:GameFramework.Resource.Addressables.AddressablesManager.#ctor">
-            <summary>
-            初始化资源管理器的新实例。
-            </summary>
-        </member>
-        <member name="P:GameFramework.Resource.Addressables.AddressablesManager.Priority">
-            <summary>
-            获取游戏框架模块优先级。
-            </summary>
-            <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
-        </member>
-        <member name="P:GameFramework.Resource.Addressables.AddressablesManager.ApplicableGameVersion">
-            <summary>
-            获取当前资源适用的游戏版本号。
-            </summary>
-        </member>
-        <member name="P:GameFramework.Resource.Addressables.AddressablesManager.InternalResourceVersion">
-            <summary>
-            获取当前内部资源版本号。
-            </summary>
-        </member>
-        <member name="M:GameFramework.Resource.Addressables.AddressablesManager.Update(System.Single,System.Single)">
-            <summary>
-            资源管理器轮询。
-            </summary>
-            <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
-            <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        </member>
-        <member name="M:GameFramework.Resource.Addressables.AddressablesManager.Shutdown">
-            <summary>
-            关闭并清理资源管理器。
-            </summary>
-        </member>
-        <member name="M:GameFramework.Resource.Addressables.AddressablesManager.LoadAsset(System.String,GameFramework.Resource.LoadAssetCallbacks)">
-            <summary>
-            异步加载资源。
-            </summary>
-            <param name="assetName">要加载资源的名称。</param>
-            <param name="loadAssetCallbacks">加载资源回调函数集。</param>
-        </member>
-        <member name="T:GameFramework.Resource.Addressables.IAddressablesManager">
-            <summary>
-            Addressables资源管理器接口
-            </summary>
-        </member>
-        <member name="P:GameFramework.Resource.Addressables.IAddressablesManager.ApplicableGameVersion">
-            <summary>
-            获取当前资源适用的游戏版本号。
-            </summary>
-        </member>
-        <member name="P:GameFramework.Resource.Addressables.IAddressablesManager.InternalResourceVersion">
-            <summary>
-            获取当前内部资源版本号。
-            </summary>
-        </member>
-        <member name="M:GameFramework.Resource.Addressables.IAddressablesManager.LoadAsset(System.String,GameFramework.Resource.LoadAssetCallbacks,System.Object)">
+        <member name="M:GameFramework.Resource.IResourceLoader.LoadAsset(System.String,GameFramework.Resource.LoadAssetCallbacks,System.Object)">
             <summary>
             异步加载资源。
             </summary>
@@ -15506,7 +15440,13 @@
             <param name="loadAssetCallbacks">加载资源回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Resource.Addressables.IAddressablesManager.LoadScene(System.String,GameFramework.Resource.LoadSceneCallbacks,System.Object)">
+        <member name="M:GameFramework.Resource.IResourceLoader.UnloadAsset(System.Object)">
+            <summary>
+            卸载资源。
+            </summary>
+            <param name="asset">要卸载的资源。</param>
+        </member>
+        <member name="M:GameFramework.Resource.IResourceLoader.LoadScene(System.String,GameFramework.Resource.LoadSceneCallbacks,System.Object)">
             <summary>
             异步加载场景。
             </summary>
@@ -15514,7 +15454,7 @@
             <param name="loadSceneCallbacks">加载场景回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Resource.Addressables.IAddressablesManager.UnloadScene(System.String,GameFramework.Resource.UnloadSceneCallbacks,System.Object)">
+        <member name="M:GameFramework.Resource.IResourceLoader.UnloadScene(System.String,GameFramework.Resource.UnloadSceneCallbacks,System.Object)">
             <summary>
             异步卸载场景。
             </summary>
@@ -15522,11 +15462,131 @@
             <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Resource.Addressables.IAddressablesManager.UnloadAsset(System.Object)">
+        <member name="T:GameFramework.Resource.ResourceManager">
+            <summary>
+            资源管理器
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.#ctor">
+            <summary>
+            初始化资源管理器的新实例。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Resource.ResourceManager.Priority">
+            <summary>
+            获取游戏框架模块优先级。
+            </summary>
+            <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
+        </member>
+        <member name="P:GameFramework.Resource.ResourceManager.ApplicableGameVersion">
+            <summary>
+            获取当前资源适用的游戏版本号。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Resource.ResourceManager.InternalResourceVersion">
+            <summary>
+            获取当前内部资源版本号。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.SetResourceLoader(GameFramework.Resource.IResourceLoader)">
+            <summary>
+            设置资源加载器。
+            </summary>
+            <param name="resourceLoader">资源加载器。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.Update(System.Single,System.Single)">
+            <summary>
+            资源管理器轮询。
+            </summary>
+            <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+            <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.Shutdown">
+            <summary>
+            关闭并清理资源管理器。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.LoadAsset(System.String,GameFramework.Resource.LoadAssetCallbacks)">
+            <summary>
+            异步加载资源。
+            </summary>
+            <param name="assetName">要加载资源的名称。</param>
+            <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.LoadAsset(System.String,GameFramework.Resource.LoadAssetCallbacks,System.Object)">
+            <summary>
+            异步加载资源。
+            </summary>
+            <param name="assetName">要加载资源的名称。</param>
+            <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.LoadScene(System.String,GameFramework.Resource.LoadSceneCallbacks,System.Object)">
+            <summary>
+            异步加载场景。
+            </summary>
+            <param name="sceneAssetName">要加载场景资源的名称。</param>
+            <param name="loadSceneCallbacks">加载场景回调函数集。</param>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.UnloadScene(System.String,GameFramework.Resource.UnloadSceneCallbacks,System.Object)">
+            <summary>
+            异步卸载场景。
+            </summary>
+            <param name="sceneAssetName">要卸载场景资源的名称。</param>
+            <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.UnloadAsset(System.Object)">
             <summary>
             卸载资源。
             </summary>
             <param name="asset">要卸载的资源。</param>
+        </member>
+        <member name="T:GameFramework.Resource.IResourceManager">
+            <summary>
+            资源管理器接口
+            </summary>
+        </member>
+        <member name="P:GameFramework.Resource.IResourceManager.ApplicableGameVersion">
+            <summary>
+            获取当前资源适用的游戏版本号。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Resource.IResourceManager.InternalResourceVersion">
+            <summary>
+            获取当前内部资源版本号。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.IResourceManager.LoadAsset(System.String,GameFramework.Resource.LoadAssetCallbacks,System.Object)">
+            <summary>
+            异步加载资源。
+            </summary>
+            <param name="assetName">要加载资源的名称。</param>
+            <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Resource.IResourceManager.UnloadAsset(System.Object)">
+            <summary>
+            卸载资源。
+            </summary>
+            <param name="asset">要卸载的资源。</param>
+        </member>
+        <member name="M:GameFramework.Resource.IResourceManager.LoadScene(System.String,GameFramework.Resource.LoadSceneCallbacks,System.Object)">
+            <summary>
+            异步加载场景。
+            </summary>
+            <param name="sceneAssetName">要加载场景资源的名称。</param>
+            <param name="loadSceneCallbacks">加载场景回调函数集。</param>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Resource.IResourceManager.UnloadScene(System.String,GameFramework.Resource.UnloadSceneCallbacks,System.Object)">
+            <summary>
+            异步卸载场景。
+            </summary>
+            <param name="sceneAssetName">要卸载场景资源的名称。</param>
+            <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
+            <param name="userData">用户自定义数据。</param>
         </member>
         <member name="T:GameFramework.Resource.LoadAssetCallbacks">
             <summary>
@@ -15745,7 +15805,7 @@
             卸载场景失败事件。
             </summary>
         </member>
-        <member name="M:GameFramework.Scene.ISceneManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Scene.ISceneManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -16004,7 +16064,7 @@
             关闭并清理场景管理器。
             </summary>
         </member>
-        <member name="M:GameFramework.Scene.SceneManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Scene.SceneManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -17095,7 +17155,7 @@
             播放声音更新事件。
             </summary>
         </member>
-        <member name="M:GameFramework.Sound.ISoundManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Sound.ISoundManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -17616,7 +17676,7 @@
             关闭并清理声音管理器。
             </summary>
         </member>
-        <member name="M:GameFramework.Sound.SoundManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.Sound.SoundManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -18371,7 +18431,7 @@
             </summary>
             <param name="objectPoolManager">对象池管理器。</param>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.UI.IUIManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>
@@ -18844,7 +18904,7 @@
             </summary>
             <param name="objectPoolManager">对象池管理器。</param>
         </member>
-        <member name="M:GameFramework.UI.UIManager.SetResourceManager(GameFramework.Resource.Addressables.IAddressablesManager)">
+        <member name="M:GameFramework.UI.UIManager.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
             </summary>

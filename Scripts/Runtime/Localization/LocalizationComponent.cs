@@ -7,7 +7,7 @@
 
 using GameFramework;
 using GameFramework.Localization;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -121,7 +121,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_LocalizationManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            m_LocalizationManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             LocalizationHelperBase localizationHelper = Helper.CreateHelper(m_LocalizationHelperTypeName, m_CustomLocalizationHelper);
             if (localizationHelper == null)
             {

@@ -7,10 +7,6 @@
 
 using GameFramework;
 using GameFramework.Localization;
-using GameFramework.Resource;
-#if ADDRESSABLES_SUPPORT
-using GameFramework.Resource.Addressables;
-#endif
 using System;
 using UnityEngine;
 

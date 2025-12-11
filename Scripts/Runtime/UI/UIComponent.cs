@@ -7,7 +7,7 @@
 
 using GameFramework;
 using GameFramework.ObjectPool;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 using GameFramework.UI;
 using System.Collections.Generic;
 using UnityEngine;
@@ -180,7 +180,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_UIManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            m_UIManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             m_UIManager.SetObjectPoolManager(GameFrameworkEntry.GetModule<IObjectPoolManager>());
             m_UIManager.InstanceAutoReleaseInterval = m_InstanceAutoReleaseInterval;
             m_UIManager.InstanceCapacity = m_InstanceCapacity;

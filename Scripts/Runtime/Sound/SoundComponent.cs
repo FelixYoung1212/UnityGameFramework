@@ -6,7 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework;
-using GameFramework.Resource.Addressables;
+using GameFramework.Resource;
 #if UNITY_5_3
 using GameFramework.Scene;
 #endif
@@ -125,7 +125,7 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
-            m_SoundManager.SetResourceManager(GameFrameworkEntry.GetModule<IAddressablesManager>());
+            m_SoundManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             SoundHelperBase soundHelper = Helper.CreateHelper(m_SoundHelperTypeName, m_CustomSoundHelper);
             if (soundHelper == null)
             {

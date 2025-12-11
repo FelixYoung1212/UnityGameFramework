@@ -8,7 +8,6 @@
 using GameFramework;
 using GameFramework.Resource;
 using System;
-using GameFramework.Resource.Addressables;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -20,7 +19,7 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Resource")]
     public sealed class ResourceComponent : GameFrameworkComponent
     {
-        private IAddressablesManager m_ResourceManager = null;
+        private IResourceManager m_ResourceManager = null;
         private bool m_ForceUnloadUnusedAssets = false;
         private bool m_PreorderUnloadUnusedAssets = false;
         private bool m_PerformGCCollect = false;
@@ -106,7 +105,7 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
-            m_ResourceManager = GameFrameworkEntry.GetModule<IAddressablesManager>();
+            m_ResourceManager = GameFrameworkEntry.GetModule<IResourceManager>();
             if (m_ResourceManager == null)
             {
                 Log.Fatal("Resource manager is invalid.");
