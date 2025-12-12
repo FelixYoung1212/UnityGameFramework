@@ -31,9 +31,6 @@ namespace UnityGameFramework.Runtime
         private bool m_EnableShowEntityUpdateEvent = false;
 
         [SerializeField]
-        private bool m_EnableShowEntityDependencyAssetEvent = false;
-
-        [SerializeField]
         private Transform m_InstanceRoot = null;
 
         [SerializeField]
