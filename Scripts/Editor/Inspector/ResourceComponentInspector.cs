@@ -16,6 +16,7 @@ namespace UnityGameFramework.Editor
     {
         private SerializedProperty m_MinUnloadUnusedAssetsInterval = null;
         private SerializedProperty m_MaxUnloadUnusedAssetsInterval = null;
+        private HelperInfo<ResourceHelperBase> m_ResourceHelperInfo = new HelperInfo<ResourceHelperBase>("Resource");
 
         public override void OnInspectorGUI()
         {
@@ -48,6 +49,12 @@ namespace UnityGameFramework.Editor
                     m_MaxUnloadUnusedAssetsInterval.floatValue = maxUnloadUnusedAssetsInterval;
                 }
             }
+            
+            EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
+            {
+                m_ResourceHelperInfo.Draw();
+            }
+            EditorGUI.EndDisabledGroup();
 
             if (EditorApplication.isPlaying && IsPrefabInHierarchy(t.gameObject))
             {
@@ -72,12 +79,14 @@ namespace UnityGameFramework.Editor
         {
             m_MinUnloadUnusedAssetsInterval = serializedObject.FindProperty("m_MinUnloadUnusedAssetsInterval");
             m_MaxUnloadUnusedAssetsInterval = serializedObject.FindProperty("m_MaxUnloadUnusedAssetsInterval");
+            m_ResourceHelperInfo.Init(serializedObject);
             
             RefreshTypeNames();
         }
 
         private void RefreshTypeNames()
         {
+            m_ResourceHelperInfo.Refresh();
             serializedObject.ApplyModifiedProperties();
         }
     }

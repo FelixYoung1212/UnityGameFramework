@@ -9,6 +9,7 @@ using GameFramework;
 using GameFramework.Resource;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UnityGameFramework.Runtime
 {
@@ -25,6 +26,13 @@ namespace UnityGameFramework.Runtime
         private bool m_PerformGCCollect = false;
         private AsyncOperation m_AsyncOperation = null;
         private float m_LastUnloadUnusedAssetsOperationElapseSeconds = 0f;
+        private ResourceHelperBase m_ResourceHelper = null;
+        
+        [SerializeField]
+        private string m_ResourceHelperTypeName = "UnityGameFramework.Runtime.DefaultResourceHelper";
+
+        [SerializeField]
+        private ResourceHelperBase m_CustomResourceHelper = null;
         
         [SerializeField]
         private float m_MinUnloadUnusedAssetsInterval = 60f;
@@ -111,6 +119,20 @@ namespace UnityGameFramework.Runtime
                 Log.Fatal("Resource manager is invalid.");
                 return;
             }
+            
+            m_ResourceHelper = Helper.CreateHelper(m_ResourceHelperTypeName, m_CustomResourceHelper);
+            if (m_ResourceHelper == null)
+            {
+                Log.Error("Can not create resource helper.");
+                return;
+            }
+
+            m_ResourceHelper.name = "Resource Helper";
+            Transform transform = m_ResourceHelper.transform;
+            transform.SetParent(this.transform);
+            transform.localScale = Vector3.one;
+
+            m_ResourceManager.SetResourceHelper(m_ResourceHelper);
         }
         
         private void Update()
@@ -141,19 +163,7 @@ namespace UnityGameFramework.Runtime
         /// 异步加载资源。
         /// </summary>
         /// <param name="assetName">要加载资源的名称。</param>
-        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
-        public void LoadAsset(string assetName, LoadAssetCallbacks loadAssetCallbacks)
-        {
-            LoadAsset(assetName, loadAssetCallbacks, null);
-        }
-
-        /// <summary>
-        /// 异步加载资源。
-        /// </summary>
-        /// <param name="assetName">要加载资源的名称。</param>
-        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void LoadAsset(string assetName, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        public void LoadAsset(string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
             {
@@ -167,7 +177,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_ResourceManager.LoadAsset(assetName, loadAssetCallbacks, userData);
+            m_ResourceManager.LoadAsset(assetName);
         }
 
         /// <summary>
