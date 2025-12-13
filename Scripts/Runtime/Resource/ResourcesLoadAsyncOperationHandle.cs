@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
+    /// <summary>
+    /// 使用Resources.LoadAsync加载返回句柄
+    /// </summary>
     public class ResourcesLoadAsyncOperationHandle : UnityAsyncOperationHandle<ResourceRequest>
     {
         public override AsyncOperationStatus Status

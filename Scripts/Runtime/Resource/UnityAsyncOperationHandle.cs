@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
+    /// <summary>
+    /// Unity自带异步加载资源句柄
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class UnityAsyncOperationHandle<T> : AsyncOperationHandleBase where T : AsyncOperation
     {
         protected T Operation { get; private set; }

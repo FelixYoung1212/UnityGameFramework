@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
+    /// <summary>
+    /// 资源辅助器基类
+    /// </summary>
     public abstract class ResourceHelperBase : MonoBehaviour, IResourceHelper
     {
         /// <summary>

@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 
 namespace UnityGameFramework.Runtime
 {
+    /// <summary>
+    /// 使用SceneManager.UnloadSceneAsync加载返回的句柄
+    /// </summary>
     public sealed class UnloadSceneAsyncOperationHandle : UnityAsyncOperationHandle<AsyncOperation>
     {
         private string m_SceneAssetName;

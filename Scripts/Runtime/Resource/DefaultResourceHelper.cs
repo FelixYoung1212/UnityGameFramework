@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 namespace UnityGameFramework.Runtime
 {
+    /// <summary>
+    /// 默认资源辅助器
+    /// </summary>
     public sealed class DefaultResourceHelper : ResourceHelperBase
     {
         /// <summary>
