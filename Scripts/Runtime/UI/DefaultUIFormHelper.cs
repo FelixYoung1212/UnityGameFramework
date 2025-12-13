@@ -24,7 +24,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>实例化后的界面。</returns>
         public override object InstantiateUIForm(object uiFormAsset)
         {
-            return Instantiate((Object)uiFormAsset);
+            return m_ResourceComponent.Instantiate(uiFormAsset);
         }
 
         /// <summary>
@@ -57,8 +57,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="uiFormInstance">要释放的界面实例。</param>
         public override void ReleaseUIForm(object uiFormAsset, object uiFormInstance)
         {
-            m_ResourceComponent.UnloadAsset(uiFormAsset);
-            Destroy((Object)uiFormInstance);
+            m_ResourceComponent.ReleaseInstance(uiFormInstance, uiFormAsset);
         }
 
         private void Start()

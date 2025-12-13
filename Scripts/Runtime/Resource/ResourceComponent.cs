@@ -27,28 +27,21 @@ namespace UnityGameFramework.Runtime
         private AsyncOperation m_AsyncOperation = null;
         private float m_LastUnloadUnusedAssetsOperationElapseSeconds = 0f;
         private ResourceHelperBase m_ResourceHelper = null;
-        
-        [SerializeField]
-        private string m_ResourceHelperTypeName = "UnityGameFramework.Runtime.DefaultResourceHelper";
 
-        [SerializeField]
-        private ResourceHelperBase m_CustomResourceHelper = null;
-        
-        [SerializeField]
-        private float m_MinUnloadUnusedAssetsInterval = 60f;
+        [SerializeField] private string m_ResourceHelperTypeName = "UnityGameFramework.Runtime.DefaultResourceHelper";
 
-        [SerializeField]
-        private float m_MaxUnloadUnusedAssetsInterval = 300f;
-        
+        [SerializeField] private ResourceHelperBase m_CustomResourceHelper = null;
+
+        [SerializeField] private float m_MinUnloadUnusedAssetsInterval = 60f;
+
+        [SerializeField] private float m_MaxUnloadUnusedAssetsInterval = 300f;
+
         /// <summary>
         /// 获取无用资源释放的等待时长，以秒为单位。
         /// </summary>
         public float LastUnloadUnusedAssetsOperationElapseSeconds
         {
-            get
-            {
-                return m_LastUnloadUnusedAssetsOperationElapseSeconds;
-            }
+            get { return m_LastUnloadUnusedAssetsOperationElapseSeconds; }
         }
 
         /// <summary>
@@ -56,14 +49,8 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         public float MinUnloadUnusedAssetsInterval
         {
-            get
-            {
-                return m_MinUnloadUnusedAssetsInterval;
-            }
-            set
-            {
-                m_MinUnloadUnusedAssetsInterval = value;
-            }
+            get { return m_MinUnloadUnusedAssetsInterval; }
+            set { m_MinUnloadUnusedAssetsInterval = value; }
         }
 
         /// <summary>
@@ -71,25 +58,16 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         public float MaxUnloadUnusedAssetsInterval
         {
-            get
-            {
-                return m_MaxUnloadUnusedAssetsInterval;
-            }
-            set
-            {
-                m_MaxUnloadUnusedAssetsInterval = value;
-            }
+            get { return m_MaxUnloadUnusedAssetsInterval; }
+            set { m_MaxUnloadUnusedAssetsInterval = value; }
         }
-        
+
         /// <summary>
         /// 获取当前资源适用的游戏版本号。
         /// </summary>
         public string ApplicableGameVersion
         {
-            get
-            {
-                return m_ResourceManager.ApplicableGameVersion;
-            }
+            get { return m_ResourceManager.ApplicableGameVersion; }
         }
 
         /// <summary>
@@ -97,10 +75,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         public int InternalResourceVersion
         {
-            get
-            {
-                return m_ResourceManager.InternalResourceVersion;
-            }
+            get { return m_ResourceManager.InternalResourceVersion; }
         }
 
         /// <summary>
@@ -119,7 +94,7 @@ namespace UnityGameFramework.Runtime
                 Log.Fatal("Resource manager is invalid.");
                 return;
             }
-            
+
             m_ResourceHelper = Helper.CreateHelper(m_ResourceHelperTypeName, m_CustomResourceHelper);
             if (m_ResourceHelper == null)
             {
@@ -134,7 +109,7 @@ namespace UnityGameFramework.Runtime
 
             m_ResourceManager.SetResourceHelper(m_ResourceHelper);
         }
-        
+
         private void Update()
         {
             m_LastUnloadUnusedAssetsOperationElapseSeconds += Time.unscaledDeltaTime;
@@ -193,10 +168,11 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 释放并且销毁实例化资源
         /// </summary>
-        /// <param name="instance"></param>
-        public void ReleaseInstance(object instance)
+        /// <param name="instance">资源实例</param>
+        /// <param name="asset">原始资源</param>
+        public void ReleaseInstance(object instance, object asset)
         {
-            m_ResourceManager.ReleaseInstance(instance);
+            m_ResourceManager.ReleaseInstance(instance, asset);
         }
 
         /// <summary>
@@ -207,7 +183,7 @@ namespace UnityGameFramework.Runtime
         {
             m_ResourceManager.UnloadAsset(asset);
         }
-        
+
         /// <summary>
         /// 预订执行释放未被使用的资源。
         /// </summary>

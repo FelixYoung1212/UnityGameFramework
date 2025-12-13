@@ -17,33 +17,34 @@ namespace UnityGameFramework.Runtime
         /// <returns>异步加载资源句柄</returns>
         public override AsyncOperationHandleBase LoadAsset(string assetName)
         {
-            return new ResourcesLoadAsyncOperationHandle(Resources.LoadAsync(assetName.Replace(Path.GetExtension(assetName), "")));
+            return new ResourcesLoadAsyncOperationHandle(assetName, Resources.LoadAsync(assetName.Replace(Path.GetExtension(assetName), "")));
         }
 
         /// <summary>
         /// 卸载资源。
         /// </summary>
-        /// <param name="asset">要卸载的资源。</param>
-        public override void UnloadAsset(object asset)
+        /// <param name="handle">要卸载的资源加载句柄。</param>
+        public override void UnloadAsset(AsyncOperationHandleBase handle)
         {
-            Resources.UnloadAsset(asset as Object);
+            Resources.UnloadAsset(handle.Result as Object);
         }
 
         /// <summary>
         /// 实例化资源。
         /// </summary>
-        /// <param name="asset">要实例化的资源。</param>
+        /// <param name="handle">要实例化的资源加载句柄。</param>
         /// <returns>资源实例</returns>
-        public override object Instantiate(object asset)
+        public override object Instantiate(AsyncOperationHandleBase handle)
         {
-            return MonoBehaviour.Instantiate(asset as Object);
+            return MonoBehaviour.Instantiate(handle.Result as Object);
         }
 
         /// <summary>
         /// 释放并且销毁实例化资源
         /// </summary>
-        /// <param name="instance"></param>
-        public override void ReleaseInstance(object instance)
+        /// <param name="instance">资源实例</param>
+        /// <param name="asset">原始资源</param>
+        public override void ReleaseInstance(object instance, object asset)
         {
             Destroy(instance as Object);
         }
@@ -56,18 +57,18 @@ namespace UnityGameFramework.Runtime
         public override AsyncOperationHandleBase LoadScene(string sceneAssetName)
         {
             string sceneName = sceneAssetName.Replace(Path.GetExtension(sceneAssetName), "").Replace("Assets/", "");
-            return new LoadSceneAsyncOperationHandle(sceneName, SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive));
+            return new LoadSceneAsyncOperationHandle(sceneAssetName, SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive));
         }
 
         /// <summary>
         /// 异步卸载场景。
         /// </summary>
-        /// <param name="sceneAssetName">要卸载场景资源的名称。</param>
+        /// <param name="handle">要卸载场景加载句柄。</param>
         /// <returns>异步卸载场景句柄</returns>
-        public override AsyncOperationHandleBase UnloadScene(string sceneAssetName)
+        public override AsyncOperationHandleBase UnloadScene(AsyncOperationHandleBase handle)
         {
-            string sceneName = sceneAssetName.Replace(Path.GetExtension(sceneAssetName), "").Replace("Assets/", "");
-            return new UnloadSceneAsyncOperationHandle(sceneName, SceneManager.UnloadSceneAsync(sceneName));
+            string sceneName = handle.AssetName.Replace(Path.GetExtension(handle.AssetName), "").Replace("Assets/", "");
+            return new UnloadSceneAsyncOperationHandle(handle.AssetName, SceneManager.UnloadSceneAsync(sceneName));
         }
     }
 }

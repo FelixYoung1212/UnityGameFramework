@@ -15432,6 +15432,11 @@
             异步加载资源句柄基类
             </summary>
         </member>
+        <member name="P:GameFramework.Resource.AsyncOperationHandleBase.AssetName">
+            <summary>
+            资源名
+            </summary>
+        </member>
         <member name="P:GameFramework.Resource.AsyncOperationHandleBase.Progress">
             <summary>
             异步加载资源进度
@@ -15487,6 +15492,12 @@
             资源引用计数
             </summary>
         </member>
+        <member name="M:GameFramework.Resource.AsyncOperationHandleBase.#ctor(System.String)">
+            <summary>
+            异步加载资源句柄基类构造器
+            </summary>
+            <param name="assetName">资源名</param>
+        </member>
         <member name="M:GameFramework.Resource.AsyncOperationHandleBase.Start">
             <summary>
             开始异步加载
@@ -15531,24 +15542,25 @@
             <param name="assetName">要加载资源的名称。</param>
             <returns>异步加载资源句柄</returns>
         </member>
-        <member name="M:GameFramework.Resource.IResourceHelper.UnloadAsset(System.Object)">
+        <member name="M:GameFramework.Resource.IResourceHelper.UnloadAsset(GameFramework.Resource.AsyncOperationHandleBase)">
             <summary>
             卸载资源。
             </summary>
-            <param name="asset">要卸载的资源。</param>
+            <param name="handle">要卸载的资源加载句柄。</param>
         </member>
-        <member name="M:GameFramework.Resource.IResourceHelper.Instantiate(System.Object)">
+        <member name="M:GameFramework.Resource.IResourceHelper.Instantiate(GameFramework.Resource.AsyncOperationHandleBase)">
             <summary>
             实例化资源。
             </summary>
-            <param name="asset">要实例化的资源。</param>
+            <param name="handle">要实例化的资源加载句柄。</param>
             <returns>资源实例</returns>
         </member>
-        <member name="M:GameFramework.Resource.IResourceHelper.ReleaseInstance(System.Object)">
+        <member name="M:GameFramework.Resource.IResourceHelper.ReleaseInstance(System.Object,System.Object)">
             <summary>
             释放并且销毁实例化资源
             </summary>
-            <param name="instance"></param>
+            <param name="instance">资源实例</param>
+            <param name="asset">原始资源</param>
         </member>
         <member name="M:GameFramework.Resource.IResourceHelper.LoadScene(System.String)">
             <summary>
@@ -15557,11 +15569,11 @@
             <param name="sceneAssetName">要加载场景资源的名称。</param>
             <returns>异步加载场景句柄</returns>
         </member>
-        <member name="M:GameFramework.Resource.IResourceHelper.UnloadScene(System.String)">
+        <member name="M:GameFramework.Resource.IResourceHelper.UnloadScene(GameFramework.Resource.AsyncOperationHandleBase)">
             <summary>
             异步卸载场景。
             </summary>
-            <param name="sceneAssetName">要卸载场景资源的名称。</param>
+            <param name="handle">要卸载场景加载句柄。</param>
             <returns>异步卸载场景句柄</returns>
         </member>
         <member name="T:GameFramework.Resource.ResourceManager">
@@ -15641,15 +15653,61 @@
             </summary>
             <param name="asset">要卸载的资源。</param>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ReleaseInstance(System.Object)">
+        <member name="M:GameFramework.Resource.ResourceManager.ReleaseInstance(System.Object,System.Object)">
             <summary>
             释放并且销毁实例化资源
             </summary>
-            <param name="instance"></param>
+            <param name="instance">资源实例</param>
+            <param name="asset">原始资源</param>
         </member>
         <member name="T:GameFramework.Resource.ResourceManager.ResourceLoader">
             <summary>
             资源加载器
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadingAssetNameToHandlesMap">
+            <summary>
+            加载中的资源列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadCompletedAssetNames">
+            <summary>
+            加载完成的资源列表，临时列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadedAssetNameToHandleMap">
+            <summary>
+            加载成功的资源列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadedAssetToHandleMap">
+            <summary>
+            加载成功的资源列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadingSceneNameToHandlesMap">
+            <summary>
+            加载中的场景列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadCompletedSceneNames">
+            <summary>
+            加载完成的场景列表，临时列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadedSceneNameToHandleMap">
+            <summary>
+            加载成功的场景字典
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_UnloadingSceneNameToHandleMap">
+            <summary>
+            卸载中的场景字典
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_UnloadCompletedSceneNames">
+            <summary>
+            卸载完成的场景列表，临时列表
             </summary>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.#ctor">
@@ -15665,7 +15723,7 @@
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.Update(System.Single,System.Single)">
             <summary>
-            加载资源器轮询。
+            资源加载器轮询。
             </summary>
             <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
             <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
@@ -15694,11 +15752,12 @@
             </summary>
             <param name="asset">要实例化的资源。</param>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.ReleaseInstance(System.Object)">
+        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.ReleaseInstance(System.Object,System.Object)">
             <summary>
             释放并且销毁实例化资源
             </summary>
-            <param name="instance"></param>
+            <param name="instance">资源实例</param>
+            <param name="asset">原始资源</param>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.LoadScene(System.String)">
             <summary>
@@ -15755,11 +15814,12 @@
             <param name="asset">要实例化的资源。</param>
             <returns>资源实例</returns>
         </member>
-        <member name="M:GameFramework.Resource.IResourceManager.ReleaseInstance(System.Object)">
+        <member name="M:GameFramework.Resource.IResourceManager.ReleaseInstance(System.Object,System.Object)">
             <summary>
             释放并且销毁实例化资源
             </summary>
-            <param name="instance"></param>
+            <param name="instance">资源实例</param>
+            <param name="asset">原始资源</param>
         </member>
         <member name="M:GameFramework.Resource.IResourceManager.LoadScene(System.String)">
             <summary>

@@ -30,7 +30,7 @@ namespace UnityGameFramework.Runtime
 
         public override string ErrorMessage => "";
 
-        public UnityAsyncOperationHandle(T operation)
+        public UnityAsyncOperationHandle(string assetName, T operation) : base(assetName)
         {
             Operation = operation;
         }

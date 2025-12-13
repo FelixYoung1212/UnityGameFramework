@@ -9,8 +9,6 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public sealed class LoadSceneAsyncOperationHandle : UnityAsyncOperationHandle<AsyncOperation>
     {
-        private string m_SceneAssetName;
-
         public override AsyncOperationStatus Status
         {
             get
@@ -25,7 +23,7 @@ namespace UnityGameFramework.Runtime
                     return AsyncOperationStatus.None;
                 }
 
-                if (SceneManager.GetSceneByName(m_SceneAssetName).isLoaded)
+                if (SceneManager.GetSceneByName(AssetName).isLoaded)
                 {
                     return AsyncOperationStatus.Succeeded;
                 }
@@ -34,9 +32,8 @@ namespace UnityGameFramework.Runtime
             }
         }
 
-        public LoadSceneAsyncOperationHandle(string sceneAssetName, AsyncOperation operation) : base(operation)
+        public LoadSceneAsyncOperationHandle(string sceneAssetName, AsyncOperation operation) : base(sceneAssetName, operation)
         {
-            m_SceneAssetName = sceneAssetName;
         }
     }
 }

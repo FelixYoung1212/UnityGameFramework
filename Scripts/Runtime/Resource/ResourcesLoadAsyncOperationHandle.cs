@@ -39,7 +39,7 @@ namespace UnityGameFramework.Runtime
             }
         }
 
-        public ResourcesLoadAsyncOperationHandle(ResourceRequest operation) : base(operation)
+        public ResourcesLoadAsyncOperationHandle(string assetName, ResourceRequest operation) : base(assetName, operation)
         {
         }
     }
