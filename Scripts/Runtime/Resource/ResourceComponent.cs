@@ -181,6 +181,25 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
+        /// 实例化资源。
+        /// </summary>
+        /// <param name="asset">要实例化的资源。</param>
+        /// <returns>资源实例</returns>
+        public object Instantiate(object asset)
+        {
+            return m_ResourceManager.Instantiate(asset);
+        }
+
+        /// <summary>
+        /// 释放并且销毁实例化资源
+        /// </summary>
+        /// <param name="instance"></param>
+        public void ReleaseInstance(object instance)
+        {
+            m_ResourceManager.ReleaseInstance(instance);
+        }
+
+        /// <summary>
         /// 卸载资源。
         /// </summary>
         /// <param name="asset">要卸载的资源。</param>

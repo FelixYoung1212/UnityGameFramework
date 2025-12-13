@@ -33,9 +33,10 @@ namespace UnityGameFramework.Runtime
         /// 实例化资源。
         /// </summary>
         /// <param name="asset">要实例化的资源。</param>
-        public override void Instantiate(object asset)
+        /// <returns>资源实例</returns>
+        public override object Instantiate(object asset)
         {
-            MonoBehaviour.Instantiate(asset as Object);
+            return MonoBehaviour.Instantiate(asset as Object);
         }
 
         /// <summary>

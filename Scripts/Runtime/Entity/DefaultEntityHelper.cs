@@ -24,7 +24,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>实例化后的实体。</returns>
         public override object InstantiateEntity(object entityAsset)
         {
-            return Instantiate((Object)entityAsset);
+            return m_ResourceComponent.Instantiate(entityAsset);
         }
 
         /// <summary>
@@ -56,8 +56,8 @@ namespace UnityGameFramework.Runtime
         /// <param name="entityInstance">要释放的实体实例。</param>
         public override void ReleaseEntity(object entityAsset, object entityInstance)
         {
+            m_ResourceComponent.ReleaseInstance(entityInstance);
             m_ResourceComponent.UnloadAsset(entityAsset);
-            Destroy((Object)entityInstance);
         }
 
         private void Start()
