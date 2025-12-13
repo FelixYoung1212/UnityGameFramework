@@ -9,6 +9,8 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public sealed class UnloadSceneAsyncOperationHandle : UnityAsyncOperationHandle<AsyncOperation>
     {
+        private string m_FixedSceneName;
+
         public override AsyncOperationStatus Status
         {
             get
@@ -23,7 +25,7 @@ namespace UnityGameFramework.Runtime
                     return AsyncOperationStatus.None;
                 }
 
-                if (!SceneManager.GetSceneByName(AssetName).isLoaded)
+                if (!SceneManager.GetSceneByName(m_FixedSceneName).isLoaded)
                 {
                     return AsyncOperationStatus.Succeeded;
                 }
@@ -32,8 +34,9 @@ namespace UnityGameFramework.Runtime
             }
         }
 
-        public UnloadSceneAsyncOperationHandle(string sceneAssetName, AsyncOperation operation) : base(sceneAssetName, operation)
+        public UnloadSceneAsyncOperationHandle(string sceneAssetName, string fixedSceneName, AsyncOperation operation) : base(sceneAssetName, operation)
         {
+            m_FixedSceneName = fixedSceneName;
         }
     }
 }

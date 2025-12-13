@@ -57,7 +57,7 @@ namespace UnityGameFramework.Runtime
         public override AsyncOperationHandleBase LoadScene(string sceneAssetName)
         {
             string sceneName = sceneAssetName.Replace(Path.GetExtension(sceneAssetName), "").Replace("Assets/", "");
-            return new LoadSceneAsyncOperationHandle(sceneAssetName, SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive));
+            return new LoadSceneAsyncOperationHandle(sceneAssetName, sceneName, SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace UnityGameFramework.Runtime
         public override AsyncOperationHandleBase UnloadScene(AsyncOperationHandleBase handle)
         {
             string sceneName = handle.AssetName.Replace(Path.GetExtension(handle.AssetName), "").Replace("Assets/", "");
-            return new UnloadSceneAsyncOperationHandle(handle.AssetName, SceneManager.UnloadSceneAsync(sceneName));
+            return new UnloadSceneAsyncOperationHandle(handle.AssetName, sceneName, SceneManager.UnloadSceneAsync(sceneName));
         }
     }
 }

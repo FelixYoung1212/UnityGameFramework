@@ -7634,6 +7634,12 @@
             初始化实体管理器的新实例。
             </summary>
         </member>
+        <member name="P:GameFramework.Entity.EntityManager.Priority">
+            <summary>
+            获取游戏框架模块优先级。
+            </summary>
+            <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
+        </member>
         <member name="P:GameFramework.Entity.EntityManager.EntityCount">
             <summary>
             获取实体数量。
@@ -15586,12 +15592,6 @@
             初始化资源管理器的新实例。
             </summary>
         </member>
-        <member name="P:GameFramework.Resource.ResourceManager.Priority">
-            <summary>
-            获取游戏框架模块优先级。
-            </summary>
-            <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
-        </member>
         <member name="P:GameFramework.Resource.ResourceManager.ApplicableGameVersion">
             <summary>
             获取当前资源适用的游戏版本号。
@@ -18900,6 +18900,12 @@
             <summary>
             初始化界面管理器的新实例。
             </summary>
+        </member>
+        <member name="P:GameFramework.UI.UIManager.Priority">
+            <summary>
+            获取游戏框架模块优先级。
+            </summary>
+            <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
         </member>
         <member name="P:GameFramework.UI.UIManager.UIGroupCount">
             <summary>
