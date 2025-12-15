@@ -24,7 +24,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>实例化后的界面。</returns>
         public override object InstantiateUIForm(object uiFormAsset)
         {
-            return m_ResourceComponent.Instantiate(uiFormAsset);
+            return m_ResourceComponent.Instantiate<GameObject>(uiFormAsset);
         }
 
         /// <summary>

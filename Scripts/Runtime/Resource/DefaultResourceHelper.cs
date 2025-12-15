@@ -33,11 +33,13 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 实例化资源。
         /// </summary>
-        /// <param name="handle">要实例化的资源加载句柄。</param>
+        /// <param name="asset">要实例化的资源。</param>
+        /// <typeparam name="T"></typeparam>
         /// <returns>资源实例</returns>
-        public override object Instantiate(AsyncOperationHandleBase handle)
+        public override T Instantiate<T>(object asset)
         {
-            return Instantiate(handle.Result as Object);
+            T instance = Instantiate(asset as Object) as T;
+            return instance;
         }
 
         /// <summary>

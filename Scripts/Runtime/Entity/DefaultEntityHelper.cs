@@ -24,7 +24,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>实例化后的实体。</returns>
         public override object InstantiateEntity(object entityAsset)
         {
-            return m_ResourceComponent.Instantiate(entityAsset);
+            return m_ResourceComponent.Instantiate<GameObject>(entityAsset);
         }
 
         /// <summary>

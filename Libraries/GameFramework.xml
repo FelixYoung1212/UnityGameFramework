@@ -15549,11 +15549,12 @@
             </summary>
             <param name="handle">要卸载的资源加载句柄。</param>
         </member>
-        <member name="M:GameFramework.Resource.IResourceHelper.Instantiate(GameFramework.Resource.AsyncOperationHandleBase)">
+        <member name="M:GameFramework.Resource.IResourceHelper.Instantiate``1(System.Object)">
             <summary>
             实例化资源。
             </summary>
-            <param name="handle">要实例化的资源加载句柄。</param>
+            <param name="asset">要实例化的资源。</param>
+            <typeparam name="T"></typeparam>
             <returns>资源实例</returns>
         </member>
         <member name="M:GameFramework.Resource.IResourceHelper.ReleaseInstance(System.Object,System.Object)">
@@ -15629,11 +15630,12 @@
             <typeparam name="T"></typeparam>
             <returns>异步加载资源句柄</returns>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.Instantiate(System.Object)">
+        <member name="M:GameFramework.Resource.ResourceManager.Instantiate``1(System.Object)">
             <summary>
             实例化资源。
             </summary>
             <param name="asset">要实例化的资源。</param>
+            <typeparam name="T"></typeparam>
             <returns>资源实例</returns>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.LoadScene(System.String)">
@@ -15749,11 +15751,12 @@
             </summary>
             <param name="asset">要卸载的资源。</param>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.Instantiate(System.Object)">
+        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.Instantiate``1(System.Object)">
             <summary>
             实例化资源。
             </summary>
             <param name="asset">要实例化的资源。</param>
+            <typeparam name="T"></typeparam>
             <returns>资源实例</returns>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.ReleaseInstance(System.Object,System.Object)">
@@ -15812,11 +15815,12 @@
             </summary>
             <param name="asset">要卸载的资源。</param>
         </member>
-        <member name="M:GameFramework.Resource.IResourceManager.Instantiate(System.Object)">
+        <member name="M:GameFramework.Resource.IResourceManager.Instantiate``1(System.Object)">
             <summary>
             实例化资源。
             </summary>
             <param name="asset">要实例化的资源。</param>
+            <typeparam name="T"></typeparam>
             <returns>资源实例</returns>
         </member>
         <member name="M:GameFramework.Resource.IResourceManager.ReleaseInstance(System.Object,System.Object)">
