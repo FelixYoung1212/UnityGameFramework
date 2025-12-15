@@ -138,7 +138,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="assetName">要加载资源的名称。</param>
         /// <typeparam name="T"></typeparam>
-        public void LoadAsset<T>(string assetName)
+        public void LoadAsset<T>(string assetName) where T : class
         {
             if (string.IsNullOrEmpty(assetName))
             {
