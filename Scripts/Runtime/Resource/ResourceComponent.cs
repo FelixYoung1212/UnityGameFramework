@@ -9,7 +9,6 @@ using GameFramework;
 using GameFramework.Resource;
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace UnityGameFramework.Runtime
 {
@@ -138,7 +137,8 @@ namespace UnityGameFramework.Runtime
         /// 异步加载资源。
         /// </summary>
         /// <param name="assetName">要加载资源的名称。</param>
-        public void LoadAsset(string assetName)
+        /// <typeparam name="T"></typeparam>
+        public void LoadAsset<T>(string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
             {
@@ -152,7 +152,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_ResourceManager.LoadAsset(assetName);
+            m_ResourceManager.LoadAsset<T>(assetName);
         }
 
         /// <summary>

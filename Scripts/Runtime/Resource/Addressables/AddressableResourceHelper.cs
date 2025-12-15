@@ -9,9 +9,9 @@ namespace UnityGameFramework.Runtime
 {
     public class AddressableResourceHelper : ResourceHelperBase
     {
-        public override AsyncOperationHandleBase LoadAsset(string assetName)
+        public override AsyncOperationHandleBase LoadAsset<T>(string assetName)
         {
-            return new AddressableAsyncOperationHandle<Object>(assetName, Addressables.LoadAssetAsync<Object>(assetName));
+            return new AddressableAsyncOperationHandle<T>(assetName, Addressables.LoadAssetAsync<T>(assetName));
         }
 
         public override void UnloadAsset(AsyncOperationHandleBase handle)
