@@ -48,8 +48,17 @@ namespace UnityGameFramework.Runtime
         /// <returns>资源实例</returns>
         public override T Instantiate<T>(object asset)
         {
-            T instance = Instantiate(asset as Object) as T;
-            return instance;
+            return Instantiate(asset) as T;
+        }
+
+        /// <summary>
+        /// 实例化资源。
+        /// </summary>
+        /// <param name="asset">要实例化的资源。</param>
+        /// <returns>资源实例</returns>
+        public override object Instantiate(object asset)
+        {
+            return Object.Instantiate(asset as Object);
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ using GameFramework;
 using GameFramework.Resource;
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace UnityGameFramework.Runtime
 {
@@ -169,11 +170,21 @@ namespace UnityGameFramework.Runtime
         /// 实例化资源。
         /// </summary>
         /// <param name="asset">要实例化的资源。</param>
+        /// <returns>资源实例</returns>
+        public object Instantiate(object asset)
+        {
+            return m_ResourceManager.Instantiate(asset);
+        }
+
+        /// <summary>
+        /// 实例化资源。
+        /// </summary>
+        /// <param name="asset">要实例化的资源。</param>
         /// <typeparam name="T"></typeparam>
         /// <returns>资源实例</returns>
         public T Instantiate<T>(object asset) where T : class
         {
-            return m_ResourceManager.Instantiate<T>(asset);
+            return Instantiate(asset) as T;
         }
 
         /// <summary>

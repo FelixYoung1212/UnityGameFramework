@@ -38,6 +38,13 @@ namespace UnityGameFramework.Runtime
         public abstract T Instantiate<T>(object asset) where T : class;
 
         /// <summary>
+        /// 实例化资源。
+        /// </summary>
+        /// <param name="asset">要实例化的资源。</param>
+        /// <returns>资源实例</returns>
+        public abstract object Instantiate(object asset);
+
+        /// <summary>
         /// 释放并且销毁实例化资源
         /// </summary>
         /// <param name="instance">资源实例</param>

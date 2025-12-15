@@ -15606,14 +15606,6 @@
             资源辅助器接口。
             </summary>
         </member>
-        <member name="M:GameFramework.Resource.IResourceHelper.LoadAsset``1(System.String)">
-            <summary>
-            异步加载资源。
-            </summary>
-            <param name="assetName">要加载资源的名称。</param>
-            <typeparam name="T"></typeparam>
-            <returns>异步加载资源句柄</returns>
-        </member>
         <member name="M:GameFramework.Resource.IResourceHelper.LoadAsset(System.String)">
             <summary>
             异步加载资源。
@@ -15627,12 +15619,11 @@
             </summary>
             <param name="handle">要卸载的资源加载句柄。</param>
         </member>
-        <member name="M:GameFramework.Resource.IResourceHelper.Instantiate``1(System.Object)">
+        <member name="M:GameFramework.Resource.IResourceHelper.Instantiate(System.Object)">
             <summary>
             实例化资源。
             </summary>
             <param name="asset">要实例化的资源。</param>
-            <typeparam name="T"></typeparam>
             <returns>资源实例</returns>
         </member>
         <member name="M:GameFramework.Resource.IResourceHelper.ReleaseInstance(System.Object,System.Object)">
@@ -15700,14 +15691,6 @@
             关闭并清理资源管理器。
             </summary>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.LoadAsset``1(System.String)">
-            <summary>
-            异步加载资源。
-            </summary>
-            <param name="assetName">要加载资源的名称。</param>
-            <typeparam name="T"></typeparam>
-            <returns>异步加载资源句柄</returns>
-        </member>
         <member name="M:GameFramework.Resource.ResourceManager.LoadAsset(System.String)">
             <summary>
             异步加载资源。
@@ -15715,12 +15698,11 @@
             <param name="assetName">要加载资源的名称。</param>
             <returns>异步加载资源句柄</returns>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.Instantiate``1(System.Object)">
+        <member name="M:GameFramework.Resource.ResourceManager.Instantiate(System.Object)">
             <summary>
             实例化资源。
             </summary>
             <param name="asset">要实例化的资源。</param>
-            <typeparam name="T"></typeparam>
             <returns>资源实例</returns>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.LoadScene(System.String)">
@@ -15822,14 +15804,6 @@
             关闭并清理加载资源器。
             </summary>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.LoadAsset``1(System.String)">
-            <summary>
-            异步加载资源。
-            </summary>
-            <param name="assetName">要加载资源的名称。</param>
-            <typeparam name="T"></typeparam>
-            <returns>异步加载资源句柄</returns>
-        </member>
         <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.LoadAsset(System.String)">
             <summary>
             异步加载资源。
@@ -15843,12 +15817,11 @@
             </summary>
             <param name="asset">要卸载的资源。</param>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.Instantiate``1(System.Object)">
+        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.Instantiate(System.Object)">
             <summary>
             实例化资源。
             </summary>
             <param name="asset">要实例化的资源。</param>
-            <typeparam name="T"></typeparam>
             <returns>资源实例</returns>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.ReleaseInstance(System.Object,System.Object)">
@@ -15893,14 +15866,6 @@
             </summary>
             <param name="resourceHelper">资源辅助器。</param>
         </member>
-        <member name="M:GameFramework.Resource.IResourceManager.LoadAsset``1(System.String)">
-            <summary>
-            异步加载资源。
-            </summary>
-            <param name="assetName">要加载资源的名称。</param>
-            <typeparam name="T"></typeparam>
-            <returns>异步加载资源句柄</returns>
-        </member>
         <member name="M:GameFramework.Resource.IResourceManager.LoadAsset(System.String)">
             <summary>
             异步加载资源。
@@ -15914,12 +15879,11 @@
             </summary>
             <param name="asset">要卸载的资源。</param>
         </member>
-        <member name="M:GameFramework.Resource.IResourceManager.Instantiate``1(System.Object)">
+        <member name="M:GameFramework.Resource.IResourceManager.Instantiate(System.Object)">
             <summary>
             实例化资源。
             </summary>
             <param name="asset">要实例化的资源。</param>
-            <typeparam name="T"></typeparam>
             <returns>资源实例</returns>
         </member>
         <member name="M:GameFramework.Resource.IResourceManager.ReleaseInstance(System.Object,System.Object)">
