@@ -36,7 +36,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>资源实例</returns>
         public override object Instantiate(AsyncOperationHandleBase handle)
         {
-            return MonoBehaviour.Instantiate(handle.Result as Object);
+            return Instantiate(handle.Result as Object);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>异步加载场景句柄</returns>
         public override AsyncOperationHandleBase LoadScene(string sceneAssetName)
         {
-            string sceneName = sceneAssetName.Replace(Path.GetExtension(sceneAssetName), "").Replace("Assets/", "");
+            string sceneName = SceneComponent.GetSceneName(sceneAssetName);
             return new LoadSceneAsyncOperationHandle(sceneAssetName, sceneName, SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive));
         }
 
@@ -67,7 +67,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>异步卸载场景句柄</returns>
         public override AsyncOperationHandleBase UnloadScene(AsyncOperationHandleBase handle)
         {
-            string sceneName = handle.AssetName.Replace(Path.GetExtension(handle.AssetName), "").Replace("Assets/", "");
+            string sceneName = SceneComponent.GetSceneName(handle.AssetName);
             return new UnloadSceneAsyncOperationHandle(handle.AssetName, sceneName, SceneManager.UnloadSceneAsync(sceneName));
         }
     }

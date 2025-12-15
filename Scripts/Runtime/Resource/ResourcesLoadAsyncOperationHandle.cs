@@ -12,7 +12,7 @@ namespace UnityGameFramework.Runtime
         {
             get
             {
-                if (Operation == null)
+                if (Handle == null)
                 {
                     return AsyncOperationStatus.Failed;
                 }
@@ -30,16 +30,16 @@ namespace UnityGameFramework.Runtime
         {
             get
             {
-                if (Operation == null)
+                if (Handle == null)
                 {
                     return null;
                 }
 
-                return Operation.asset;
+                return Handle.asset;
             }
         }
 
-        public ResourcesLoadAsyncOperationHandle(string assetName, ResourceRequest operation) : base(assetName, operation)
+        public ResourcesLoadAsyncOperationHandle(string assetName, ResourceRequest handle) : base(assetName, handle)
         {
         }
     }

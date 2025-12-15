@@ -9,18 +9,18 @@ namespace UnityGameFramework.Runtime
     /// <typeparam name="T"></typeparam>
     public class UnityAsyncOperationHandle<T> : AsyncOperationHandleBase where T : AsyncOperation
     {
-        protected T Operation { get; private set; }
+        protected T Handle { get; private set; }
 
         public override float Progress
         {
             get
             {
-                if (Operation == null)
+                if (Handle == null)
                 {
                     return 0f;
                 }
 
-                return Operation.progress;
+                return Handle.progress;
             }
         }
 
@@ -30,9 +30,9 @@ namespace UnityGameFramework.Runtime
 
         public override string ErrorMessage => "";
 
-        public UnityAsyncOperationHandle(string assetName, T operation) : base(assetName)
+        public UnityAsyncOperationHandle(string assetName, T handle) : base(assetName)
         {
-            Operation = operation;
+            Handle = handle;
         }
     }
 }

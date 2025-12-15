@@ -15,12 +15,12 @@ namespace UnityGameFramework.Runtime
         {
             get
             {
-                if (Operation == null)
+                if (Handle == null)
                 {
                     return AsyncOperationStatus.Failed;
                 }
 
-                if (!Operation.isDone)
+                if (!Handle.isDone)
                 {
                     return AsyncOperationStatus.None;
                 }
@@ -34,7 +34,7 @@ namespace UnityGameFramework.Runtime
             }
         }
 
-        public UnloadSceneAsyncOperationHandle(string sceneAssetName, string fixedSceneName, AsyncOperation operation) : base(sceneAssetName, operation)
+        public UnloadSceneAsyncOperationHandle(string sceneAssetName, string fixedSceneName, AsyncOperation handle) : base(sceneAssetName, handle)
         {
             m_FixedSceneName = fixedSceneName;
         }
