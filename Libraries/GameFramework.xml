@@ -15510,6 +15510,77 @@
             <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
             <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         </member>
+        <member name="T:GameFramework.Resource.AsyncOperationHandleBase`1">
+            <summary>
+            异步加载资源句柄泛型基类
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:GameFramework.Resource.AsyncOperationHandleBase`1.#ctor(GameFramework.Resource.AsyncOperationHandleBase)">
+            <summary>
+            异步加载资源句柄泛型基类构造器
+            </summary>
+            <param name="op"></param>
+        </member>
+        <member name="P:GameFramework.Resource.AsyncOperationHandleBase`1.AssetName">
+            <summary>
+            资源名
+            </summary>
+        </member>
+        <member name="P:GameFramework.Resource.AsyncOperationHandleBase`1.Progress">
+            <summary>
+            异步加载资源进度
+            </summary>
+        </member>
+        <member name="P:GameFramework.Resource.AsyncOperationHandleBase`1.Status">
+            <summary>
+            异步加载资源状态
+            </summary>
+        </member>
+        <member name="P:GameFramework.Resource.AsyncOperationHandleBase`1.Result">
+            <summary>
+            异步资源加载结果
+            </summary>
+        </member>
+        <member name="P:GameFramework.Resource.AsyncOperationHandleBase`1.ErrorMessage">
+            <summary>
+            异步加载资源错误信息
+            </summary>
+        </member>
+        <member name="P:GameFramework.Resource.AsyncOperationHandleBase`1.Duration">
+            <summary>
+            异步资源加载耗时
+            </summary>
+        </member>
+        <member name="E:GameFramework.Resource.AsyncOperationHandleBase`1.OnProgress">
+            <summary>
+            异步加载资源进度更新事件
+            </summary>
+        </member>
+        <member name="E:GameFramework.Resource.AsyncOperationHandleBase`1.OnSucceeded">
+            <summary>
+            异步加载资源成功事件
+            </summary>
+        </member>
+        <member name="E:GameFramework.Resource.AsyncOperationHandleBase`1.OnFailed">
+            <summary>
+            异步加载资源失败事件
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.AsyncOperationHandleBase`1.op_Implicit(GameFramework.Resource.AsyncOperationHandleBase)~GameFramework.Resource.AsyncOperationHandleBase{`0}">
+            <summary>
+            隐式转换符
+            </summary>
+            <param name="op"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GameFramework.Resource.AsyncOperationHandleBase`1.op_Implicit(GameFramework.Resource.AsyncOperationHandleBase{`0})~GameFramework.Resource.AsyncOperationHandleBase">
+            <summary>
+            隐式转换符
+            </summary>
+            <param name="op"></param>
+            <returns></returns>
+        </member>
         <member name="T:GameFramework.Resource.AsyncOperationStatus">
             <summary>
             异步加载资源状态
@@ -15541,6 +15612,13 @@
             </summary>
             <param name="assetName">要加载资源的名称。</param>
             <typeparam name="T"></typeparam>
+            <returns>异步加载资源句柄</returns>
+        </member>
+        <member name="M:GameFramework.Resource.IResourceHelper.LoadAsset(System.String)">
+            <summary>
+            异步加载资源。
+            </summary>
+            <param name="assetName">要加载资源的名称。</param>
             <returns>异步加载资源句柄</returns>
         </member>
         <member name="M:GameFramework.Resource.IResourceHelper.UnloadAsset(GameFramework.Resource.AsyncOperationHandleBase)">
@@ -15628,6 +15706,13 @@
             </summary>
             <param name="assetName">要加载资源的名称。</param>
             <typeparam name="T"></typeparam>
+            <returns>异步加载资源句柄</returns>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.LoadAsset(System.String)">
+            <summary>
+            异步加载资源。
+            </summary>
+            <param name="assetName">要加载资源的名称。</param>
             <returns>异步加载资源句柄</returns>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.Instantiate``1(System.Object)">
@@ -15745,6 +15830,13 @@
             <typeparam name="T"></typeparam>
             <returns>异步加载资源句柄</returns>
         </member>
+        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.LoadAsset(System.String)">
+            <summary>
+            异步加载资源。
+            </summary>
+            <param name="assetName">要加载资源的名称。</param>
+            <returns>异步加载资源句柄</returns>
+        </member>
         <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.UnloadAsset(System.Object)">
             <summary>
             卸载资源。
@@ -15807,6 +15899,13 @@
             </summary>
             <param name="assetName">要加载资源的名称。</param>
             <typeparam name="T"></typeparam>
+            <returns>异步加载资源句柄</returns>
+        </member>
+        <member name="M:GameFramework.Resource.IResourceManager.LoadAsset(System.String)">
+            <summary>
+            异步加载资源。
+            </summary>
+            <param name="assetName">要加载资源的名称。</param>
             <returns>异步加载资源句柄</returns>
         </member>
         <member name="M:GameFramework.Resource.IResourceManager.UnloadAsset(System.Object)">

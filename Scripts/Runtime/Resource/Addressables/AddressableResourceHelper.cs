@@ -15,9 +15,19 @@ namespace UnityGameFramework.Runtime
         /// <param name="assetName">要加载资源的名称。</param>
         /// <typeparam name="T"></typeparam>
         /// <returns>异步加载资源句柄</returns>
-        public override AsyncOperationHandleBase LoadAsset<T>(string assetName)
+        public override AsyncOperationHandleBase<T> LoadAsset<T>(string assetName)
         {
             return new AddressableAsyncOperationHandle<T>(assetName, Addressables.LoadAssetAsync<T>(assetName));
+        }
+        
+        /// <summary>
+        /// 异步加载资源。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <returns>异步加载资源句柄</returns>
+        public override AsyncOperationHandleBase LoadAsset(string assetName)
+        {
+            return new AddressableAsyncOperationHandle<Object>(assetName, Addressables.LoadAssetAsync<Object>(assetName));
         }
 
         /// <summary>

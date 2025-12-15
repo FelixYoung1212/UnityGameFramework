@@ -14,7 +14,14 @@ namespace UnityGameFramework.Runtime
         /// <param name="assetName">要加载资源的名称。</param>
         /// <typeparam name="T"></typeparam>
         /// <returns>异步加载资源句柄</returns>
-        public abstract AsyncOperationHandleBase LoadAsset<T>(string assetName) where T : class;
+        public abstract AsyncOperationHandleBase<T> LoadAsset<T>(string assetName) where T : class;
+        
+        /// <summary>
+        /// 异步加载资源。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <returns>异步加载资源句柄</returns>
+       public abstract AsyncOperationHandleBase LoadAsset(string assetName);
 
         /// <summary>
         /// 卸载资源。

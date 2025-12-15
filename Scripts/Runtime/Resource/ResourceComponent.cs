@@ -138,21 +138,31 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="assetName">要加载资源的名称。</param>
         /// <typeparam name="T"></typeparam>
-        public void LoadAsset<T>(string assetName) where T : class
+        public AsyncOperationHandleBase<T> LoadAsset<T>(string assetName) where T : class
+        {
+            return LoadAsset(assetName);
+        }
+
+        /// <summary>
+        /// 异步加载资源。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <returns>异步加载资源句柄</returns>
+        public AsyncOperationHandleBase LoadAsset(string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
             {
                 Log.Error("Asset name is invalid.");
-                return;
+                return null;
             }
 
             if (!assetName.StartsWith("Assets/", StringComparison.Ordinal))
             {
                 Log.Error("Asset name '{0}' is invalid.", assetName);
-                return;
+                return null;
             }
 
-            m_ResourceManager.LoadAsset<T>(assetName);
+            return m_ResourceManager.LoadAsset(assetName);
         }
 
         /// <summary>
