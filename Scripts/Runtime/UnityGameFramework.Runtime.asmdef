@@ -5,7 +5,8 @@
         "Unity.Addressables",
         "Unity.ResourceManager",
         "UniTask",
-        "UniTask.Addressables"
+        "UniTask.Addressables",
+        "Luban.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -24,6 +25,11 @@
             "name": "com.cysharp.unitask",
             "expression": "",
             "define": "UNITASK_ADDRESSABLE_SUPPORT"
+        },
+        {
+            "name": "com.code-philosophy.luban",
+            "expression": "",
+            "define": "LUBAN_SUPPORT"
         }
     ],
     "noEngineReferences": false
