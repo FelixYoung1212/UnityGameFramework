@@ -1,13 +1,15 @@
 ﻿using System;
 using GameFramework;
 using GameFramework.DataTable;
+using Luban;
+using SimpleJSON;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
     public class LubanDataTableHelper : DataTableHelperBase
     {
-        private static readonly string BytesAssetExtension = ".bin";
+        private static readonly string BytesAssetExtension = ".bytes";
 
         private ResourceComponent m_ResourceComponent = null;
 
@@ -69,7 +71,27 @@ namespace UnityGameFramework.Runtime
         /// <returns>是否解析数据表成功。</returns>
         public override bool ParseData(DataTableBase dataTable, string dataTableString, object userData)
         {
-            return false;
+            try
+            {
+                JSONNode dataTableNode = JSONNode.Parse(dataTableString);
+                foreach (JSONNode dataRowNode in dataTableNode.Children)
+                {
+                    if (!dataRowNode.IsObject)
+                    {
+                        throw new SerializationException();
+                    }
+
+                    var dataRow = Activator.CreateInstance(dataTable.Type, (object)dataRowNode);
+                    dataTable.AddDataRow(dataRow as IDataRow);
+                }
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Warning("Can not parse data table string with exception '{0}'.", exception);
+                return false;
+            }
         }
 
         /// <summary>
@@ -83,7 +105,22 @@ namespace UnityGameFramework.Runtime
         /// <returns>是否解析数据表成功。</returns>
         public override bool ParseData(DataTableBase dataTable, byte[] dataTableBytes, int startIndex, int length, object userData)
         {
-            return false;
+            try
+            {
+                ByteBuf dataTableBuf = new ByteBuf(dataTableBytes);
+                for (int n = dataTableBuf.ReadSize(); n > 0; --n)
+                {
+                    var dataRow = Activator.CreateInstance(dataTable.Type, dataTableBuf);
+                    dataTable.AddDataRow(dataRow as IDataRow);
+                }
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Warning("Can not parse dictionary bytes with exception '{0}'.", exception);
+                return false;
+            }
         }
 
         /// <summary>

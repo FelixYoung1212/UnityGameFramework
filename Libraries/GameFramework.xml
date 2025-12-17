@@ -109,24 +109,6 @@
             <param name="userData">用户自定义数据。</param>
             <returns>是否解析内容成功。</returns>
         </member>
-        <member name="M:GameFramework.DataProvider`1.ParseDataRow(System.Object,System.Object)">
-            <summary>
-            解析数据表行数据源。
-            </summary>
-            <param name="dataRowString">要解析的数据表行字符串数据。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>解析完成的数据表行数据。</returns>
-        </member>
-        <member name="M:GameFramework.DataProvider`1.ParseDataRow(System.Object,System.Int32,System.Int32,System.Object)">
-            <summary>
-            解析数据表行数据源。
-            </summary>
-            <param name="dataRowBytes">要解析的数据表行二进制数据。</param>
-            <param name="startIndex">数据表行二进制流的起始位置。</param>
-            <param name="length">数据表行二进制流的长度。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>解析完成的数据表行数据。</returns>
-        </member>
         <member name="M:GameFramework.DataProvider`1.SetResourceManager(GameFramework.Resource.IResourceManager)">
             <summary>
             设置资源管理器。
@@ -303,26 +285,6 @@
             <param name="length">内容二进制流的长度。</param>
             <param name="userData">用户自定义数据。</param>
             <returns>是否解析内容成功。</returns>
-        </member>
-        <member name="M:GameFramework.IDataProviderHelper`1.ParseDataRow(`0,System.Object,System.Object)">
-            <summary>
-            解析数据表行数据源。
-            </summary>
-            <param name="dataProviderOwner">数据提供者的持有者。</param>
-            <param name="dataRowString">要解析的数据表行字符串数据。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>解析完成的数据表行数据。</returns>
-        </member>
-        <member name="M:GameFramework.IDataProviderHelper`1.ParseDataRow(`0,System.Object,System.Int32,System.Int32,System.Object)">
-            <summary>
-            解析数据表行数据源。
-            </summary>
-            <param name="dataProviderOwner">数据提供者的持有者。</param>
-            <param name="dataRowBytes">要解析的数据表行二进制数据。</param>
-            <param name="startIndex">数据表行二进制流的起始位置。</param>
-            <param name="length">数据表行二进制流的长度。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>解析完成的数据表行数据。</returns>
         </member>
         <member name="M:GameFramework.IDataProviderHelper`1.ReleaseDataAsset(`0,System.Object)">
             <summary>
@@ -5601,41 +5563,11 @@
             <param name="id">数据表行的编号。</param>
             <returns>是否存在数据表行。</returns>
         </member>
-        <member name="M:GameFramework.DataTable.DataTableBase.AddDataRow(System.Object,System.Object)">
+        <member name="M:GameFramework.DataTable.DataTableBase.AddDataRow(GameFramework.DataTable.IDataRow)">
             <summary>
             增加数据表行。
             </summary>
-            <param name="dataRowString">要解析的数据表行字符串数据。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>是否增加数据表行成功。</returns>
-        </member>
-        <member name="M:GameFramework.DataTable.DataTableBase.AddDataRow(System.Object,System.Int32,System.Int32,System.Object)">
-            <summary>
-            增加数据表行。
-            </summary>
-            <param name="dataRowBytes">要解析的数据表行二进制数据。</param>
-            <param name="startIndex">数据表行二进制流的起始位置。</param>
-            <param name="length">数据表行二进制流的长度。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>是否增加数据表行成功。</returns>
-        </member>
-        <member name="M:GameFramework.DataTable.DataTableBase.ParseDataRow(System.Object,System.Object)">
-            <summary>
-            解析数据表行数据源。
-            </summary>
-            <param name="dataRowString">要解析的数据表行字符串数据。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>解析完成的数据表行数据。</returns>
-        </member>
-        <member name="M:GameFramework.DataTable.DataTableBase.ParseDataRow(System.Object,System.Int32,System.Int32,System.Object)">
-            <summary>
-            解析数据表行数据源。
-            </summary>
-            <param name="dataRowBytes">要解析的数据表行二进制数据。</param>
-            <param name="startIndex">数据表行二进制流的起始位置。</param>
-            <param name="length">数据表行二进制流的长度。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>解析完成的数据表行数据。</returns>
+            <param name="dataRow">要增加的数据表行数据。</param>
         </member>
         <member name="M:GameFramework.DataTable.DataTableBase.RemoveDataRow(System.Int32)">
             <summary>
@@ -5996,23 +5928,11 @@
             </summary>
             <param name="results">所有数据表行。</param>
         </member>
-        <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.AddDataRow(System.Object,System.Object)">
+        <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.AddDataRow(GameFramework.DataTable.IDataRow)">
             <summary>
             增加数据表行。
             </summary>
-            <param name="dataRowString">要解析的数据表行字符串数据。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>是否增加数据表行成功。</returns>
-        </member>
-        <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.AddDataRow(System.Object,System.Int32,System.Int32,System.Object)">
-            <summary>
-            增加数据表行。
-            </summary>
-            <param name="dataRowBytes">要解析的数据表行二进制数据。</param>
-            <param name="startIndex">数据表行二进制流的起始位置。</param>
-            <param name="length">数据表行二进制流的长度。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>是否增加数据表行成功。</returns>
+            <param name="dataRow">要增加的数据表行数据。</param>
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.RemoveDataRow(System.Int32)">
             <summary>
@@ -6181,23 +6101,11 @@
             </summary>
             <param name="results">所有数据表行。</param>
         </member>
-        <member name="M:GameFramework.DataTable.IDataTable`1.AddDataRow(System.Object,System.Object)">
+        <member name="M:GameFramework.DataTable.IDataTable`1.AddDataRow(GameFramework.DataTable.IDataRow)">
             <summary>
             增加数据表行。
             </summary>
-            <param name="dataRowString">要解析的数据表行数据源。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>是否增加数据表行成功。</returns>
-        </member>
-        <member name="M:GameFramework.DataTable.IDataTable`1.AddDataRow(System.Object,System.Int32,System.Int32,System.Object)">
-            <summary>
-            增加数据表行。
-            </summary>
-            <param name="dataRowBytes">要解析的数据表行二进制数据。</param>
-            <param name="startIndex">数据表行二进制流的起始位置。</param>
-            <param name="length">数据表行二进制流的长度。</param>
-            <param name="userData">用户自定义数据。</param>
-            <returns>是否增加数据表行成功。</returns>
+            <param name="dataRow">要增加的数据表行数据。</param>
         </member>
         <member name="M:GameFramework.DataTable.IDataTable`1.RemoveDataRow(System.Int32)">
             <summary>

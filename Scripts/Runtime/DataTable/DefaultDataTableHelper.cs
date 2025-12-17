@@ -92,11 +92,9 @@ namespace UnityGameFramework.Runtime
                         continue;
                     }
 
-                    if (!dataTable.AddDataRow(dataRowString, userData))
-                    {
-                        Log.Warning("Can not parse data row string '{0}'.", dataRowString);
-                        return false;
-                    }
+                    //TODO:解析字符串数据需要重构
+                    var dataRow = Activator.CreateInstance(dataTable.Type, dataRowString);
+                    dataTable.AddDataRow(dataRow as IDataRow);
                 }
 
                 return true;
@@ -128,12 +126,9 @@ namespace UnityGameFramework.Runtime
                         while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
                         {
                             int dataRowBytesLength = binaryReader.Read7BitEncodedInt32();
-                            if (!dataTable.AddDataRow(dataTableBytes, (int)binaryReader.BaseStream.Position, dataRowBytesLength, userData))
-                            {
-                                Log.Warning("Can not parse data row bytes.");
-                                return false;
-                            }
-
+                            //TODO:解析二进制数据需要重构
+                            var dataRow = Activator.CreateInstance(dataTable.Type, dataTableBytes);
+                            dataTable.AddDataRow(dataRow as IDataRow);
                             binaryReader.BaseStream.Position += dataRowBytesLength;
                         }
                     }
