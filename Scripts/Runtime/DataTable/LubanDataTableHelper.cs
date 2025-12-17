@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if LUBAN_SUPPORT
+using System;
 using GameFramework;
 using GameFramework.DataTable;
 using Luban;
@@ -144,3 +145,4 @@ namespace UnityGameFramework.Runtime
         }
     }
 }
+#endif
