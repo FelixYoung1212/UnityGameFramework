@@ -174,10 +174,6 @@ namespace {namespaceName}
     public sealed partial class {className} : IDataRow
     {{
         int IDataRow.Id => Id;
-
-        public {className}()
-        {{
-        }}
     }}
 }}";
         }
