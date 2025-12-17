@@ -36,9 +36,7 @@ namespace UnityGameFramework.Editor
                 try
                 {
                     var types = assembly.GetTypes()
-                        .Where(t => t.IsClass && !t.IsAbstract &&
-                                    (t.BaseType?.FullName == "Luban.BeanBase" ||
-                                     t.BaseType?.BaseType?.FullName == "Luban.BeanBase"))
+                        .Where(t => t.IsClass && !t.IsAbstract && (t.BaseType?.FullName == "Luban.BeanBase" || t.BaseType?.BaseType?.FullName == "Luban.BeanBase"))
                         .Where(t => t.Namespace == "cfg");
 
                     foreach (var type in types)
@@ -121,9 +119,7 @@ namespace UnityGameFramework.Editor
 
                 AssetDatabase.Refresh();
 
-                EditorUtility.DisplayDialog("完成",
-                    $"生成完成！\n成功: {successCount} 个\n失败: {errorCount} 个\n\n文件保存在: {outputPath}",
-                    "确定");
+                EditorUtility.DisplayDialog("完成", $"生成完成！\n成功: {successCount} 个\n失败: {errorCount} 个\n\n文件保存在: {outputPath}", "确定");
             }
             catch (Exception ex)
             {
