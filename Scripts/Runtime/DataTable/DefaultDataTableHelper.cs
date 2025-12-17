@@ -92,8 +92,7 @@ namespace UnityGameFramework.Runtime
                         continue;
                     }
 
-                    //TODO:解析字符串数据需要重构
-                    var dataRow = Activator.CreateInstance(dataTable.Type, dataRowString);
+                    var dataRow = Activator.CreateInstance(dataTable.Type, dataRowString, userData);
                     dataTable.AddDataRow(dataRow as IDataRow);
                 }
 
@@ -126,8 +125,7 @@ namespace UnityGameFramework.Runtime
                         while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
                         {
                             int dataRowBytesLength = binaryReader.Read7BitEncodedInt32();
-                            //TODO:解析二进制数据需要重构
-                            var dataRow = Activator.CreateInstance(dataTable.Type, dataTableBytes);
+                            var dataRow = Activator.CreateInstance(dataTable.Type, dataTableBytes, startIndex, dataRowBytesLength, userData);
                             dataTable.AddDataRow(dataRow as IDataRow);
                             binaryReader.BaseStream.Position += dataRowBytesLength;
                         }
