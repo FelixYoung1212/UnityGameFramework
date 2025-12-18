@@ -125,6 +125,13 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
+            m_EventComponent = GameEntry.GetComponent<EventComponent>();
+            if (m_EventComponent == null)
+            {
+                Log.Fatal("Event component is invalid.");
+                return;
+            }
+            
             m_SoundManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             SoundHelperBase soundHelper = Helper.CreateHelper(m_SoundHelperTypeName, m_CustomSoundHelper);
             if (soundHelper == null)

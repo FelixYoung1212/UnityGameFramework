@@ -108,6 +108,12 @@ namespace UnityGameFramework.Runtime
             }
 
             string sceneName = sceneAssetName.Substring(sceneNamePosition + 1);
+            sceneNamePosition = sceneName.LastIndexOf(".unity");
+            if (sceneNamePosition > 0)
+            {
+                sceneName = sceneName.Substring(0, sceneNamePosition);
+            }
+            
             sceneNamePosition = sceneName.LastIndexOf(".scene");
             if (sceneNamePosition > 0)
             {
@@ -224,7 +230,9 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".scene", StringComparison.Ordinal))
+            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) ||
+                (!sceneAssetName.EndsWith(".unity", StringComparison.Ordinal) &&
+                 !sceneAssetName.EndsWith(".scene", StringComparison.Ordinal)))
             {
                 Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
                 return;
@@ -255,7 +263,9 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".scene", StringComparison.Ordinal))
+            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) ||
+                (!sceneAssetName.EndsWith(".unity", StringComparison.Ordinal) &&
+                 !sceneAssetName.EndsWith(".scene", StringComparison.Ordinal)))
             {
                 Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
                 return;
@@ -278,7 +288,9 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".scene", StringComparison.Ordinal))
+            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) ||
+                (!sceneAssetName.EndsWith(".unity", StringComparison.Ordinal) &&
+                 !sceneAssetName.EndsWith(".scene", StringComparison.Ordinal)))
             {
                 Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
                 return;
