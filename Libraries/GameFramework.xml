@@ -15680,6 +15680,11 @@
             加载中的资源列表
             </summary>
         </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_ToAddLoadingAssetNameToHandlesMap">
+            <summary>
+            准备添加到加载中的资源列表的资源，临时列表
+            </summary>
+        </member>
         <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadCompletedAssetNames">
             <summary>
             加载完成的资源列表，临时列表
