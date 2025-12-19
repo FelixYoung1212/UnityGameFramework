@@ -15644,19 +15644,6 @@
             <param name="asset">要实例化的资源。</param>
             <returns>资源实例</returns>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.LoadScene(System.String)">
-            <summary>
-            异步加载场景。
-            </summary>
-            <param name="sceneAssetName">要加载场景资源的名称。</param>
-            <returns>异步加载场景句柄</returns>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.UnloadScene(System.String)">
-            <summary>
-            异步卸载场景。
-            </summary>
-            <param name="sceneAssetName">要卸载场景资源的名称。</param>
-        </member>
         <member name="M:GameFramework.Resource.ResourceManager.UnloadAsset(System.Object)">
             <summary>
             卸载资源。
@@ -15670,136 +15657,177 @@
             <param name="instance">资源实例</param>
             <param name="asset">原始资源</param>
         </member>
-        <member name="T:GameFramework.Resource.ResourceManager.ResourceLoader">
-            <summary>
-            资源加载器
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadingAssetNameToHandleMap">
-            <summary>
-            加载中的资源列表
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_AssetsToAddLoadingMap">
-            <summary>
-            准备添加到加载中的资源列表的资源，临时列表
-            加载成功后再次加载的资源列表
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_AssetsToLoadAfterLoaded">
-            <summary>
-            加载成功后再次加载的资源列表
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadCompletedAssetNames">
-            <summary>
-            加载完成的资源列表，临时列表
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadedAssetNameToHandleMap">
-            <summary>
-            加载成功的资源列表
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadedAssetToHandleMap">
-            <summary>
-            加载成功的资源列表
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_UnloadingAssetHandles">
-            <summary>
-            准备卸载的资源列表
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadingSceneNameToHandleMap">
-            <summary>
-            加载中的场景列表
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadCompletedSceneNames">
-            <summary>
-            加载完成的场景列表，临时列表
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadedSceneNameToHandleMap">
-            <summary>
-            加载成功的场景字典
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_UnloadingSceneNameToHandleMap">
-            <summary>
-            卸载中的场景字典
-            </summary>
-        </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_UnloadCompletedSceneNames">
-            <summary>
-            卸载完成的场景列表，临时列表
-            </summary>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.#ctor">
-            <summary>
-            初始化加载资源器的新实例。
-            </summary>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.SetResourceHelper(GameFramework.Resource.IResourceHelper)">
-            <summary>
-            设置资源辅助器。
-            </summary>
-            <param name="resourceHelper">资源辅助器。</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.Update(System.Single,System.Single)">
-            <summary>
-            资源加载器轮询。
-            </summary>
-            <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
-            <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.Shutdown">
-            <summary>
-            关闭并清理加载资源器。
-            </summary>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.LoadAsset(System.String)">
-            <summary>
-            异步加载资源。
-            </summary>
-            <param name="assetName">要加载资源的名称。</param>
-            <returns>异步加载资源句柄</returns>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.UnloadAsset(System.Object)">
-            <summary>
-            卸载资源。
-            </summary>
-            <param name="asset">要卸载的资源。</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.UnloadAssetInternal(GameFramework.Resource.AsyncOperationHandleBase)">
-            <summary>
-            卸载资源。
-            </summary>
-            <param name="op">要卸载的资源句柄。</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.Instantiate(System.Object)">
-            <summary>
-            实例化资源。
-            </summary>
-            <param name="asset">要实例化的资源。</param>
-            <returns>资源实例</returns>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.ReleaseInstance(System.Object,System.Object)">
-            <summary>
-            释放并且销毁实例化资源
-            </summary>
-            <param name="instance">资源实例</param>
-            <param name="asset">原始资源</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.LoadScene(System.String)">
+        <member name="M:GameFramework.Resource.ResourceManager.LoadScene(System.String)">
             <summary>
             异步加载场景。
             </summary>
             <param name="sceneAssetName">要加载场景资源的名称。</param>
             <returns>异步加载场景句柄</returns>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.UnloadScene(System.String)">
+        <member name="M:GameFramework.Resource.ResourceManager.UnloadScene(System.String)">
+            <summary>
+            异步卸载场景。
+            </summary>
+            <param name="sceneAssetName">要卸载场景资源的名称。</param>
+        </member>
+        <member name="T:GameFramework.Resource.ResourceManager.AssetLoader">
+            <summary>
+            资源加载器
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.AssetLoader.m_LoadingAssetNameToHandleMap">
+            <summary>
+            加载中的资源列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.AssetLoader.m_AssetsToAddLoadingMap">
+            <summary>
+            准备添加到加载中的资源列表的资源，临时列表
+            加载成功后再次加载的资源列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.AssetLoader.m_AssetsToLoadAfterLoaded">
+            <summary>
+            加载成功后再次加载的资源列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.AssetLoader.m_LoadCompletedAssetNames">
+            <summary>
+            加载完成的资源列表，临时列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.AssetLoader.m_LoadedAssetNameToHandleMap">
+            <summary>
+            加载成功的资源列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.AssetLoader.m_LoadedAssetToHandleMap">
+            <summary>
+            加载成功的资源列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.AssetLoader.m_UnloadingAssetHandles">
+            <summary>
+            准备卸载的资源列表
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.#ctor">
+            <summary>
+            初始化加载资源器的新实例。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.SetResourceHelper(GameFramework.Resource.IResourceHelper)">
+            <summary>
+            设置资源辅助器。
+            </summary>
+            <param name="resourceHelper">资源辅助器。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.Update(System.Single,System.Single)">
+            <summary>
+            资源加载器轮询。
+            </summary>
+            <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+            <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.Shutdown">
+            <summary>
+            关闭并清理加载资源器。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.LoadAsset(System.String)">
+            <summary>
+            异步加载资源。
+            </summary>
+            <param name="assetName">要加载资源的名称。</param>
+            <returns>异步加载资源句柄</returns>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.UnloadAsset(System.Object)">
+            <summary>
+            卸载资源。
+            </summary>
+            <param name="asset">要卸载的资源。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.UnloadAssetInternal(GameFramework.Resource.AsyncOperationHandleBase)">
+            <summary>
+            卸载资源。
+            </summary>
+            <param name="op">要卸载的资源句柄。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.Instantiate(System.Object)">
+            <summary>
+            实例化资源。
+            </summary>
+            <param name="asset">要实例化的资源。</param>
+            <returns>资源实例</returns>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.ReleaseInstance(System.Object,System.Object)">
+            <summary>
+            释放并且销毁实例化资源
+            </summary>
+            <param name="instance">资源实例</param>
+            <param name="asset">原始资源</param>
+        </member>
+        <member name="T:GameFramework.Resource.ResourceManager.SceneLoader">
+            <summary>
+            场景加载器
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.SceneLoader.m_LoadingSceneNameToHandleMap">
+            <summary>
+            加载中的场景列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.SceneLoader.m_LoadCompletedSceneNames">
+            <summary>
+            加载完成的场景列表，临时列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.SceneLoader.m_LoadedSceneNameToHandleMap">
+            <summary>
+            加载成功的场景字典
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.SceneLoader.m_UnloadingSceneNameToHandleMap">
+            <summary>
+            卸载中的场景字典
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.SceneLoader.m_UnloadCompletedSceneNames">
+            <summary>
+            卸载完成的场景列表，临时列表
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.SceneLoader.#ctor">
+            <summary>
+            初始化场景加载器的新实例。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.SceneLoader.SetResourceHelper(GameFramework.Resource.IResourceHelper)">
+            <summary>
+            设置资源辅助器。
+            </summary>
+            <param name="resourceHelper">资源辅助器。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.SceneLoader.Update(System.Single,System.Single)">
+            <summary>
+            场景加载器轮询。
+            </summary>
+            <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+            <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.SceneLoader.Shutdown">
+            <summary>
+            关闭并清理场景加载器。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.SceneLoader.LoadScene(System.String)">
+            <summary>
+            异步加载场景。
+            </summary>
+            <param name="sceneAssetName">要加载场景资源的名称。</param>
+            <returns>异步加载场景句柄</returns>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.SceneLoader.UnloadScene(System.String)">
             <summary>
             异步卸载场景。
             </summary>
