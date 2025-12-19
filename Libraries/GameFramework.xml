@@ -15706,11 +15706,6 @@
             加载成功的资源列表
             </summary>
         </member>
-        <member name="F:GameFramework.Resource.ResourceManager.AssetLoader.m_UnloadingAssetHandles">
-            <summary>
-            准备卸载的资源列表
-            </summary>
-        </member>
         <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.#ctor">
             <summary>
             初始化加载资源器的新实例。
@@ -15746,12 +15741,6 @@
             卸载资源。
             </summary>
             <param name="asset">要卸载的资源。</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.UnloadAssetInternal(GameFramework.Resource.AsyncOperationHandleBase)">
-            <summary>
-            卸载资源。
-            </summary>
-            <param name="op">要卸载的资源句柄。</param>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.AssetLoader.Instantiate(System.Object)">
             <summary>
