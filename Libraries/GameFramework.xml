@@ -15675,14 +15675,20 @@
             资源加载器
             </summary>
         </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadingAssetNameToHandlesMap">
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadingAssetNameToHandleMap">
             <summary>
             加载中的资源列表
             </summary>
         </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_ToAddLoadingAssetNameToHandlesMap">
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_AssetsToAddLoadingMap">
             <summary>
             准备添加到加载中的资源列表的资源，临时列表
+            加载成功后再次加载的资源列表
+            </summary>
+        </member>
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_AssetsToLoadAfterLoaded">
+            <summary>
+            加载成功后再次加载的资源列表
             </summary>
         </member>
         <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadCompletedAssetNames">
@@ -15700,12 +15706,12 @@
             加载成功的资源列表
             </summary>
         </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_ToUnloadAssetHandles">
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_UnloadingAssetHandles">
             <summary>
             准备卸载的资源列表
             </summary>
         </member>
-        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadingSceneNameToHandlesMap">
+        <member name="F:GameFramework.Resource.ResourceManager.ResourceLoader.m_LoadingSceneNameToHandleMap">
             <summary>
             加载中的场景列表
             </summary>
