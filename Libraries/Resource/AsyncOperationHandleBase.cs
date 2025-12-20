@@ -153,6 +153,9 @@ namespace GameFramework.Resource
             OnFailed = null;
         }
 
+        /// <summary>
+        /// 释放资源加载句柄
+        /// </summary>
         public virtual void Release()
         {
         }
@@ -243,6 +246,9 @@ namespace GameFramework.Resource
         /// </summary>
         public event Action<AsyncOperationHandleBase<T>> OnFailed;
 
+        /// <summary>
+        /// 释放资源加载句柄
+        /// </summary>
         public void Release() => m_Op.Release();
 
         /// <summary>
