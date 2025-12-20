@@ -1,0 +1,291 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace GameFramework.Resource
+{
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
+    {
+        /// <summary>
+        /// 资源加载器
+        /// </summary>
+        private sealed class AssetLoader
+        {
+            private IResourceHelper m_ResourceHelper;
+
+            /// <summary>
+            /// 加载中的资源列表
+            /// </summary>
+            private readonly Dictionary<string, AsyncOperationHandleBase> m_LoadingAssetNameToHandleMap;
+            
+            /// <summary>
+            /// 准备添加到加载中的资源列表的资源，临时列表
+            /// 加载成功后再次加载的资源列表
+            /// </summary>
+            private readonly Dictionary<string, AsyncOperationHandleBase> m_AssetsToAddLoadingMap;
+            
+            // /// <summary>
+            // /// 加载成功后再次加载的资源列表
+            // /// </summary>
+            // private readonly List<AsyncOperationHandleBase> m_AssetsToLoadAfterLoaded;
+
+            /// <summary>
+            /// 加载完成的资源列表，临时列表
+            /// </summary>
+            private readonly List<string> m_LoadCompletedAssetNames;
+
+            /// <summary>
+            /// 加载成功的资源列表
+            /// </summary>
+            private readonly Dictionary<string, AsyncOperationHandleBase> m_LoadedAssetNameToHandleMap;
+
+            /// <summary>
+            /// 加载成功的资源列表
+            /// </summary>
+            private readonly Dictionary<object, AsyncOperationHandleBase> m_LoadedAssetToHandleMap;
+
+            /// <summary>
+            /// 初始化加载资源器的新实例。
+            /// </summary>
+            public AssetLoader()
+            {
+                m_LoadingAssetNameToHandleMap = new Dictionary<string, AsyncOperationHandleBase>(StringComparer.Ordinal);
+                m_AssetsToAddLoadingMap = new Dictionary<string, AsyncOperationHandleBase>(StringComparer.Ordinal);
+                //m_AssetsToLoadAfterLoaded = new List<AsyncOperationHandleBase>();
+                m_LoadCompletedAssetNames = new List<string>();
+                m_LoadedAssetNameToHandleMap = new Dictionary<string, AsyncOperationHandleBase>(StringComparer.Ordinal);
+                m_LoadedAssetToHandleMap = new Dictionary<object, AsyncOperationHandleBase>();
+            }
+
+            /// <summary>
+            /// 设置资源辅助器。
+            /// </summary>
+            /// <param name="resourceHelper">资源辅助器。</param>
+            public void SetResourceHelper(IResourceHelper resourceHelper)
+            {
+                if (resourceHelper == null)
+                {
+                    throw new GameFrameworkException("Resource helper is invalid.");
+                }
+
+                m_ResourceHelper = resourceHelper;
+            }
+
+            /// <summary>
+            /// 资源加载器轮询。
+            /// </summary>
+            /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+            /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
+            public void Update(float elapseSeconds, float realElapseSeconds)
+            {
+                foreach (var asset in m_LoadingAssetNameToHandleMap)
+                {
+                    asset.Value.Update(elapseSeconds, realElapseSeconds);
+                }
+
+                if (m_AssetsToAddLoadingMap.Count > 0)
+                {
+                    foreach (var asset in m_AssetsToAddLoadingMap)
+                    {
+                        m_LoadingAssetNameToHandleMap.Add(asset.Key, asset.Value);
+                    }
+
+                    m_AssetsToAddLoadingMap.Clear();
+                }
+                
+                // if (m_AssetsToLoadAfterLoaded.Count > 0)
+                // {
+                //     for (var i = 0; i < m_AssetsToLoadAfterLoaded.Count; i++)
+                //     {
+                //         m_AssetsToLoadAfterLoaded[i].Update(elapseSeconds, realElapseSeconds);
+                //     }
+                //
+                //     m_AssetsToLoadAfterLoaded.Clear();
+                // }
+
+                if (m_LoadCompletedAssetNames.Count > 0)
+                {
+                    foreach (var assetName in m_LoadCompletedAssetNames)
+                    {
+                        m_LoadingAssetNameToHandleMap.Remove(assetName);
+                    }
+
+                    m_LoadCompletedAssetNames.Clear();
+                }
+            }
+
+            /// <summary>
+            /// 关闭并清理加载资源器。
+            /// </summary>
+            public void Shutdown()
+            {
+                m_LoadingAssetNameToHandleMap.Clear();
+                m_AssetsToAddLoadingMap.Clear();
+                // m_AssetsToLoadAfterLoaded.Clear();
+                m_LoadCompletedAssetNames.Clear();
+                m_LoadedAssetNameToHandleMap.Clear();
+                m_LoadedAssetToHandleMap.Clear();
+            }
+
+            /// <summary>
+            /// 异步加载资源。
+            /// </summary>
+            /// <param name="assetName">要加载资源的名称。</param>
+            /// <returns>异步加载资源句柄</returns>
+            public AsyncOperationHandleBase LoadAsset(string assetName)
+            {
+                if (m_ResourceHelper == null)
+                {
+                    throw new GameFrameworkException("You must set resource helper first.");
+                }
+                
+                if (m_LoadedAssetNameToHandleMap.TryGetValue(assetName, out AsyncOperationHandleBase op))
+                {
+                    op.OnSucceeded += handle => handle.IncrementReferenceCount();
+                    op.OnSucceeded += handle => m_LoadCompletedAssetNames.Add(assetName);
+                    op.Start();
+                    if (m_LoadingAssetNameToHandleMap.ContainsKey(assetName))
+                    {
+                        m_LoadCompletedAssetNames.Remove(assetName);
+                    }
+                    else
+                    {
+                        if (!m_AssetsToAddLoadingMap.ContainsKey(assetName))
+                        {
+                            m_AssetsToAddLoadingMap.Add(assetName, op);
+                        }
+                    }
+
+                    return op;
+                }
+
+                if (m_AssetsToAddLoadingMap.TryGetValue(assetName, out op) || m_LoadingAssetNameToHandleMap.TryGetValue(assetName, out op))
+                {
+                    op.OnSucceeded += handle => handle.IncrementReferenceCount();
+                    return op;
+                }
+
+                try
+                {
+                    op = m_ResourceHelper.LoadAsset(assetName);
+                    op.OnSucceeded += LoadAssetSuccessCallback;
+                    op.OnFailed += LoadAssetFailCallback;
+                    op.Start();
+                    m_AssetsToAddLoadingMap.Add(assetName, op);
+                    return op;
+                }
+                catch (Exception e)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("load asset failed asset name: {0} error message: {1}.", assetName, e.Message));
+                }
+            }
+
+            /// <summary>
+            /// 卸载资源。
+            /// </summary>
+            /// <param name="asset">要卸载的资源。</param>
+            public void UnloadAsset(object asset)
+            {
+                if (m_ResourceHelper == null)
+                {
+                    throw new GameFrameworkException("You must set resource helper first.");
+                }
+
+                if (!m_LoadedAssetToHandleMap.TryGetValue(asset, out AsyncOperationHandleBase op))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("asset {0} is not loaded.", asset.ToString()));
+                }
+
+                op.DecrementReferenceCount();
+
+                if (op.ReferenceCount > 0)
+                {
+                    return;
+                }
+
+                var assetName = op.AssetName;
+                try
+                {
+                    m_ResourceHelper.UnloadAsset(op);
+                    m_LoadedAssetNameToHandleMap.Remove(assetName);
+                    m_LoadedAssetToHandleMap.Remove(asset);
+                    m_AssetsToAddLoadingMap.Remove(assetName);
+                }
+                catch (Exception e)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not unload asset {0}, error message {1}.", assetName, e.Message));
+                }
+            }
+
+            /// <summary>
+            /// 实例化资源。
+            /// </summary>
+            /// <param name="asset">要实例化的资源。</param>
+            /// <returns>资源实例</returns>
+            public object Instantiate(object asset)
+            {
+                if (m_ResourceHelper == null)
+                {
+                    throw new GameFrameworkException("You must set resource helper first.");
+                }
+
+                if (!m_LoadedAssetToHandleMap.TryGetValue(asset, out AsyncOperationHandleBase op))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("asset {0} is not loaded.", asset.ToString()));
+                }
+
+                try
+                {
+                    object instance = m_ResourceHelper.Instantiate(asset);
+                    op.IncrementReferenceCount();
+                    return instance;
+                }
+                catch (Exception e)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not instantiate asset {0} error message {1}.", op.AssetName, e.Message));
+                }
+            }
+
+            /// <summary>
+            /// 释放并且销毁实例化资源
+            /// </summary>
+            /// <param name="instance">资源实例</param>
+            /// <param name="asset">原始资源</param>
+            public void ReleaseInstance(object instance, object asset)
+            {
+                if (m_ResourceHelper == null)
+                {
+                    throw new GameFrameworkException("You must set resource helper first.");
+                }
+
+                if (!m_LoadedAssetToHandleMap.TryGetValue(asset, out AsyncOperationHandleBase op))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("asset {0} is not loaded.", asset.ToString()));
+                }
+
+                try
+                {
+                    m_ResourceHelper.ReleaseInstance(instance, asset);
+                    op.DecrementReferenceCount();
+                }
+                catch (Exception e)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not release instance {0} error message {1}.", op.AssetName, e.Message));
+                }
+            }
+
+            private void LoadAssetSuccessCallback(AsyncOperationHandleBase handle)
+            {
+                m_LoadedAssetNameToHandleMap[handle.AssetName] = handle;
+                m_LoadedAssetToHandleMap[handle.Result] = handle;
+                m_LoadCompletedAssetNames.Add(handle.AssetName);
+            }
+
+            private void LoadAssetFailCallback(AsyncOperationHandleBase handle)
+            {
+                m_LoadCompletedAssetNames.Add(handle.AssetName);
+                GameFrameworkLog.Error(Utility.Text.Format("Load asset failure, asset name '{0}', error message '{1}'.", handle.AssetName, handle.ErrorMessage));
+            }
+        }
+    }
+}

@@ -6,7 +6,8 @@
         "Unity.ResourceManager",
         "UniTask",
         "UniTask.Addressables",
-        "Luban.Runtime"
+        "Luban.Runtime",
+        "GameFramework"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

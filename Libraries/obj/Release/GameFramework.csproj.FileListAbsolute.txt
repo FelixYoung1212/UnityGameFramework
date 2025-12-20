@@ -1,0 +1,7 @@
+E:\UnityProjects\GameFramework\GameFramework\bin\Release\GameFramework.xml
+E:\UnityProjects\GameFramework\GameFramework\bin\Release\GameFramework.dll
+E:\UnityProjects\GameFramework\GameFramework\bin\Release\GameFramework.pdb
+E:\UnityProjects\GameFramework\GameFramework\obj\Release\GameFramework.csproj.AssemblyReference.cache
+E:\UnityProjects\GameFramework\GameFramework\obj\Release\GameFramework.csproj.CoreCompileInputs.cache
+E:\UnityProjects\GameFramework\GameFramework\obj\Release\GameFramework.dll
+E:\UnityProjects\GameFramework\GameFramework\obj\Release\GameFramework.pdb
