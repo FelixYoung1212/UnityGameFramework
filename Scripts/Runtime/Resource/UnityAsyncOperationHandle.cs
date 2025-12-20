@@ -9,7 +9,9 @@ namespace UnityGameFramework.Runtime
     /// <typeparam name="T"></typeparam>
     public class UnityAsyncOperationHandle<T> : AsyncOperationHandleBase where T : AsyncOperation
     {
-        protected T Handle { get; private set; }
+        protected T Handle { get; set; }
+
+        public override bool IsValid => Handle != null;
 
         public override float Progress
         {

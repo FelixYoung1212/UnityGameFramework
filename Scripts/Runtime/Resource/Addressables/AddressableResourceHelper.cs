@@ -36,13 +36,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="handle">要卸载的资源加载句柄。</param>
         public override void UnloadAsset(AsyncOperationHandleBase handle)
         {
-            var addressableHandle = handle as AddressableAsyncOperationHandle<Object>;
-            if (addressableHandle == null)
-            {
-                return;
-            }
-
-            Addressables.Release(addressableHandle.Handle);
+            handle.Release();
         }
 
         /// <summary>
@@ -100,8 +94,8 @@ namespace UnityGameFramework.Runtime
             }
             
             var unloadHandle = new AddressableAsyncOperationHandle<SceneInstance>(handle.AssetName, Addressables.UnloadSceneAsync(addressableHandle.Handle, false));
-            unloadHandle.OnSucceeded += _ => Addressables.Release(unloadHandle.Handle);
-            unloadHandle.OnFailed += _ => Addressables.Release(unloadHandle.Handle);
+            unloadHandle.OnSucceeded += _ => unloadHandle.Release();
+            unloadHandle.OnFailed += _ => unloadHandle.Release();
             return unloadHandle;
         }
     }

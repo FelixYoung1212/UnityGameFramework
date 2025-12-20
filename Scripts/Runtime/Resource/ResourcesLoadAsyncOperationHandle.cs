@@ -42,5 +42,16 @@ namespace UnityGameFramework.Runtime
         public ResourcesLoadAsyncOperationHandle(string assetName, ResourceRequest handle) : base(assetName, handle)
         {
         }
+
+        public override void Release()
+        {
+            if (Handle == null)
+            {
+                return;
+            }
+
+            Resources.UnloadAsset(Handle.asset);
+            Handle = null;
+        }
     }
 }

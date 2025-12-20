@@ -37,7 +37,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="handle">要卸载的资源加载句柄。</param>
         public override void UnloadAsset(AsyncOperationHandleBase handle)
         {
-            Resources.UnloadAsset(handle.Result as Object);
+            handle.Release();
         }
 
         /// <summary>
