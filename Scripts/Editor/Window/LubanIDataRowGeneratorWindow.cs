@@ -56,6 +56,8 @@ namespace UnityGameFramework.Editor
         private void OnGUI()
         {
             // 显示类型列表
+            EditorGUILayout.LabelField($"找到 {beanBaseTypes.Count} 个类型:", EditorStyles.boldLabel);
+
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
             foreach (var type in beanBaseTypes)
             {
@@ -77,14 +79,14 @@ namespace UnityGameFramework.Editor
 
             EditorGUILayout.Space();
 
-            // 生成所有按钮
-            if (GUILayout.Button("生成所有文件", GUILayout.Height(30)))
+            // 生成单个文件按钮
+            if (GUILayout.Button("生成到 Tables.IDataRow.cs", GUILayout.Height(30)))
             {
-                GenerateFiles(beanBaseTypes);
+                GenerateSingleFile(beanBaseTypes);
             }
         }
 
-        private void GenerateFiles(List<System.Type> typesToGenerate)
+        private void GenerateSingleFile(List<System.Type> typesToGenerate)
         {
             string outputPath = GetOutputPath();
             if (string.IsNullOrEmpty(outputPath))
@@ -92,56 +94,33 @@ namespace UnityGameFramework.Editor
                 return;
             }
 
-            int successCount = 0;
-            int errorCount = 0;
-
             try
             {
+                // 检查哪些类型有Id字段
+                var validTypes = new List<System.Type>();
+                var invalidTypes = new List<string>();
+
                 foreach (var type in typesToGenerate)
                 {
-                    try
+                    var idProperty = type.GetField("Id", BindingFlags.Public | BindingFlags.Instance);
+                    if (idProperty != null)
                     {
-                        if (GenerateIDataRowFile(type, outputPath))
-                        {
-                            successCount++;
-                        }
-                        else
-                        {
-                            errorCount++;
-                        }
+                        validTypes.Add(type);
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Debug.LogError($"生成 {type.Name} 时出错: {ex.Message}");
-                        errorCount++;
+                        invalidTypes.Add(type.Name);
                     }
                 }
 
-                AssetDatabase.Refresh();
-
-                EditorUtility.DisplayDialog("完成", $"生成完成！\n成功: {successCount} 个\n失败: {errorCount} 个\n\n文件保存在: {outputPath}", "确定");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"生成过程出错: {ex.Message}");
-                EditorUtility.DisplayDialog("错误", $"生成过程出错: {ex.Message}", "确定");
-            }
-        }
-
-        private bool GenerateIDataRowFile(System.Type type, string outputPath)
-        {
-            try
-            {
-                // 获取 Id 属性
-                var idProperty = type.GetField("Id", BindingFlags.Public | BindingFlags.Instance);
-                if (idProperty == null)
+                if (validTypes.Count == 0)
                 {
-                    Debug.LogWarning($"类型 {type.Name} 没有找到 Id 属性，跳过生成");
-                    return false;
+                    EditorUtility.DisplayDialog("错误", "没有找到任何有效的类型（包含Id字段）", "确定");
+                    return;
                 }
 
-                // 构建文件内容
-                string content = BuildFileContent(type.Name, type.Namespace);
+                // 生成文件内容
+                string content = BuildSingleFileContent(validTypes);
 
                 // 确保输出目录存在
                 if (!Directory.Exists(outputPath))
@@ -150,41 +129,83 @@ namespace UnityGameFramework.Editor
                 }
 
                 // 写入文件
-                string fileName = $"{type.Name}.IDataRow.cs";
+                string fileName = "Tables.IDataRow.cs";
                 string filePath = Path.Combine(outputPath, fileName);
 
                 File.WriteAllText(filePath, content);
-                Debug.Log($"已生成: {filePath}");
+                Debug.Log($"已生成单个文件: {filePath}");
+                Debug.Log($"包含 {validTypes.Count} 个类型的IDataRow实现");
 
-                return true;
+                if (invalidTypes.Count > 0)
+                {
+                    Debug.LogWarning($"以下类型没有Id字段，已跳过: {string.Join(", ", invalidTypes)}");
+                }
+
+                AssetDatabase.Refresh();
+
+                EditorUtility.DisplayDialog("完成",
+                    $"已生成 Tables.IDataRow.cs 文件！\n" +
+                    $"包含类型: {validTypes.Count} 个\n" +
+                    $"跳过类型: {invalidTypes.Count} 个\n\n" +
+                    $"文件保存在: {outputPath}",
+                    "确定");
             }
             catch (Exception ex)
             {
-                Debug.LogError($"生成 {type.Name} 的文件时出错: {ex}");
-                return false;
+                Debug.LogError($"生成过程出错: {ex.Message}\n{ex.StackTrace}");
+                EditorUtility.DisplayDialog("错误", $"生成过程出错: {ex.Message}", "确定");
             }
         }
 
-        private string BuildFileContent(string className, string namespaceName)
+        private string BuildSingleFileContent(List<System.Type> types)
         {
-            return $@"using GameFramework.DataTable;
+            // 使用第一个类型的命名空间（假设所有类型都在同一个命名空间下）
+            string namespaceName = types.FirstOrDefault()?.Namespace ?? "cfg";
 
-namespace {namespaceName}
-{{
-    public sealed partial class {className} : IDataRow
-    {{
-        int IDataRow.Id => Id;
-    }}
-}}";
+            // 按类型名称排序
+            types = types.OrderBy(t => t.Name).ToList();
+
+            // 开始构建文件内容
+            var content = new System.Text.StringBuilder();
+
+            content.AppendLine("using GameFramework.DataTable;");
+            content.AppendLine();
+            content.AppendLine($"namespace {namespaceName}");
+            content.AppendLine("{");
+
+            // 为每个类型添加partial class实现
+            foreach (var type in types)
+            {
+                content.AppendLine($"    public sealed partial class {type.Name} : IDataRow");
+                content.AppendLine("    {");
+                content.AppendLine("        int IDataRow.Id => Id;");
+                content.AppendLine("    }");
+                content.AppendLine();
+            }
+
+            // 移除最后多余的空行
+            if (content.Length > 0)
+            {
+                content.Length -= 2;
+            }
+
+            content.AppendLine("}");
+
+            return content.ToString();
         }
 
-        private string GetOutputPath()
+        private string GetOutputPath(bool useSavedPath = false)
         {
             // 默认保存在 Assets 目录下
             string defaultPath = "Assets";
 
             // 检查是否已有自定义路径设置
             string savedPath = EditorPrefs.GetString("IDataRowGenerator_OutputPath", defaultPath);
+
+            if (useSavedPath && !string.IsNullOrEmpty(savedPath) && Directory.Exists(savedPath))
+            {
+                return savedPath;
+            }
 
             // 让用户选择路径
             string selectedPath = EditorUtility.SaveFolderPanel("选择输出目录", savedPath, "");
