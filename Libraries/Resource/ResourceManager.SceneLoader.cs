@@ -82,12 +82,12 @@ namespace GameFramework.Resource
             /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public void Update(float elapseSeconds, float realElapseSeconds)
             {
-                AsyncOperationHandleUtility.UpdateHandles(m_LoadingSceneHandles, elapseSeconds, realElapseSeconds);
-                AsyncOperationHandleUtility.RemoveHandlesByName(m_LoadCompletedSceneNames, m_LoadingSceneHandles, m_LoadingSceneNameToHandleMap);
-                AsyncOperationHandleUtility.RemoveInvalidHandles(m_LoadingSceneHandles, m_LoadingSceneNameToHandleMap);
-                AsyncOperationHandleUtility.UpdateHandles(m_UnLoadingSceneHandles, elapseSeconds, realElapseSeconds);
-                AsyncOperationHandleUtility.RemoveHandlesByName(m_UnloadCompletedSceneNames, m_UnLoadingSceneHandles, m_UnloadingSceneNameToHandleMap);
-                AsyncOperationHandleUtility.RemoveInvalidHandles(m_UnLoadingSceneHandles, m_UnloadingSceneNameToHandleMap);
+                LoaderStaticMethods.UpdateHandles(m_LoadingSceneHandles, elapseSeconds, realElapseSeconds);
+                LoaderStaticMethods.RemoveHandlesByName(m_LoadCompletedSceneNames, m_LoadingSceneHandles, m_LoadingSceneNameToHandleMap);
+                LoaderStaticMethods.RemoveInvalidHandles(m_LoadingSceneHandles, m_LoadingSceneNameToHandleMap);
+                LoaderStaticMethods.UpdateHandles(m_UnLoadingSceneHandles, elapseSeconds, realElapseSeconds);
+                LoaderStaticMethods.RemoveHandlesByName(m_UnloadCompletedSceneNames, m_UnLoadingSceneHandles, m_UnloadingSceneNameToHandleMap);
+                LoaderStaticMethods.RemoveInvalidHandles(m_UnLoadingSceneHandles, m_UnloadingSceneNameToHandleMap);
             }
 
             /// <summary>

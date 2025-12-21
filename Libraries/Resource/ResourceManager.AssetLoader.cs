@@ -70,9 +70,9 @@ namespace GameFramework.Resource
             /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public void Update(float elapseSeconds, float realElapseSeconds)
             {
-                AsyncOperationHandleUtility.UpdateHandles(m_LoadingAssetHandles, elapseSeconds, realElapseSeconds);
-                AsyncOperationHandleUtility.RemoveHandlesByName(m_LoadCompletedAssetNames, m_LoadingAssetHandles, m_LoadingAssetNameToHandleMap);
-                AsyncOperationHandleUtility.RemoveInvalidHandles(m_LoadingAssetHandles, m_LoadingAssetNameToHandleMap);
+                LoaderStaticMethods.UpdateHandles(m_LoadingAssetHandles, elapseSeconds, realElapseSeconds);
+                LoaderStaticMethods.RemoveHandlesByName(m_LoadCompletedAssetNames, m_LoadingAssetHandles, m_LoadingAssetNameToHandleMap);
+                LoaderStaticMethods.RemoveInvalidHandles(m_LoadingAssetHandles, m_LoadingAssetNameToHandleMap);
             }
 
             /// <summary>

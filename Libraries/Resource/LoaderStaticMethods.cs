@@ -2,7 +2,10 @@ using System.Collections.Generic;
 
 namespace GameFramework.Resource
 {
-    internal static class AsyncOperationHandleUtility
+    /// <summary>
+    /// 加载器的一些公用静态方法
+    /// </summary>
+    internal static class LoaderStaticMethods
     {
         /// <summary>
         /// 更新目标句柄列表
