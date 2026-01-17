@@ -25,7 +25,7 @@
         {
             "name": "com.cysharp.unitask",
             "expression": "",
-            "define": "UNITASK_ADDRESSABLE_SUPPORT"
+            "define": "UNITASK_SUPPORT"
         },
         {
             "name": "com.code-philosophy.luban",

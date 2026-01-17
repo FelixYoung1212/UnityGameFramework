@@ -27,6 +27,16 @@ namespace UnityGameFramework.Runtime
 
         private readonly List<IEntity> m_InternalEntityResults = new List<IEntity>();
 
+        /// <summary>
+        /// 成功回调
+        /// </summary>
+        private readonly Dictionary<int, Action<ShowEntitySuccessEventArgs>> m_SucceededCallbacks = new Dictionary<int, Action<ShowEntitySuccessEventArgs>>();
+
+        /// <summary>
+        /// 失败回调
+        /// </summary>
+        private readonly Dictionary<int, Action<ShowEntityFailureEventArgs>> m_FailedCallbacks = new Dictionary<int, Action<ShowEntityFailureEventArgs>>();
+
         [SerializeField]
         private bool m_EnableShowEntityUpdateEvent = false;
 
@@ -368,7 +378,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="entityGroupName">实体组名称。</param>
         public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName) where T : EntityLogic
         {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, null);
+            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, null, null, null);
         }
 
         /// <summary>
@@ -380,7 +390,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="entityGroupName">实体组名称。</param>
         public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName)
         {
-            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, null);
+            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, null, null, null);
         }
 
         /// <summary>
@@ -393,7 +403,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName, object userData) where T : EntityLogic
         {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, userData);
+            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, userData, null, null);
         }
 
         /// <summary>
@@ -404,12 +414,24 @@ namespace UnityGameFramework.Runtime
         /// <param name="entityAssetName">实体资源名称。</param>
         /// <param name="entityGroupName">实体组名称。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, object userData)
+        /// <param name="onSucceeded">成功回调</param>
+        /// <param name="onFailed">失败回调</param>
+        public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, object userData, Action<ShowEntitySuccessEventArgs> onSucceeded, Action<ShowEntityFailureEventArgs> onFailed)
         {
             if (entityLogicType == null)
             {
                 Log.Error("Entity type is invalid.");
                 return;
+            }
+
+            if (onSucceeded != null)
+            {
+                m_SucceededCallbacks.TryAdd(entityId, onSucceeded);
+            }
+
+            if (onFailed != null)
+            {
+                m_FailedCallbacks.TryAdd(entityId, onFailed);
             }
 
             m_EntityManager.ShowEntity(entityId, entityAssetName, entityGroupName, ShowEntityInfo.Create(entityLogicType, userData));
@@ -1040,13 +1062,17 @@ namespace UnityGameFramework.Runtime
 
         private void OnShowEntitySuccess(object sender, GameFramework.Entity.ShowEntitySuccessEventArgs e)
         {
-            m_EventComponent.Fire(this, ShowEntitySuccessEventArgs.Create(e));
+            var eventArgs = ShowEntitySuccessEventArgs.Create(e);
+            InvokeShowEntitySucceededCallback(eventArgs);
+            m_EventComponent.Fire(this, eventArgs);
         }
 
         private void OnShowEntityFailure(object sender, GameFramework.Entity.ShowEntityFailureEventArgs e)
         {
             Log.Warning("Show entity failure, entity id '{0}', asset name '{1}', entity group name '{2}', error message '{3}'.", e.EntityId, e.EntityAssetName, e.EntityGroupName, e.ErrorMessage);
-            m_EventComponent.Fire(this, ShowEntityFailureEventArgs.Create(e));
+            var eventArgs = ShowEntityFailureEventArgs.Create(e);
+            InvokeShowEntityFailedCallback(eventArgs);
+            m_EventComponent.Fire(this, eventArgs);
         }
 
         private void OnShowEntityUpdate(object sender, GameFramework.Entity.ShowEntityUpdateEventArgs e)
@@ -1057,6 +1083,28 @@ namespace UnityGameFramework.Runtime
         private void OnHideEntityComplete(object sender, GameFramework.Entity.HideEntityCompleteEventArgs e)
         {
             m_EventComponent.Fire(this, HideEntityCompleteEventArgs.Create(e));
+        }
+
+        private void InvokeShowEntitySucceededCallback(ShowEntitySuccessEventArgs e)
+        {
+            if (!m_SucceededCallbacks.TryGetValue(e.Entity.Id, out Action<ShowEntitySuccessEventArgs> onSucceeded))
+            {
+                return;
+            }
+
+            onSucceeded(e);
+            m_SucceededCallbacks.Remove(e.Entity.Id);
+        }
+
+        private void InvokeShowEntityFailedCallback(ShowEntityFailureEventArgs e)
+        {
+            if (!m_FailedCallbacks.TryGetValue(e.EntityId, out Action<ShowEntityFailureEventArgs> onFailed))
+            {
+                return;
+            }
+
+            onFailed(e);
+            m_SucceededCallbacks.Remove(e.EntityId);
         }
     }
 }
