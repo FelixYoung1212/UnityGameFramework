@@ -14,7 +14,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="onSucceeded">成功回调</param>
         public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName, Action<T> onSucceeded) where T : EntityLogic
         {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, null, e => { onSucceeded?.Invoke(e.Entity.GetComponent<T>()); }, null);
+            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, null, e => { onSucceeded?.Invoke(e as T); }, null);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="onFailed">失败回调</param>
         public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName, Action<T> onSucceeded, Action<string> onFailed) where T : EntityLogic
         {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, null, e => { onSucceeded?.Invoke(e.Entity.GetComponent<T>()); }, e => { onFailed?.Invoke(e.ErrorMessage); });
+            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, null, e => { onSucceeded?.Invoke(e as T); }, e => { onFailed?.Invoke(e); });
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="onSucceeded">成功回调</param>
         public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, Action<EntityLogic> onSucceeded)
         {
-            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, null, e => { onSucceeded?.Invoke(e.Entity.GetComponent<EntityLogic>()); }, null);
+            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, null, e => { onSucceeded?.Invoke(e); }, null);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="onFailed">失败回调</param>
         public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, Action<EntityLogic> onSucceeded, Action<string> onFailed)
         {
-            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, null, e => { onSucceeded?.Invoke(e.Entity.GetComponent<EntityLogic>()); }, e => { onFailed?.Invoke(e.ErrorMessage); });
+            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, null, e => { onSucceeded?.Invoke(e); }, e => { onFailed?.Invoke(e); });
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="onSucceeded">成功回调</param>
         public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName, object userData, Action<T> onSucceeded) where T : EntityLogic
         {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, userData, e => { onSucceeded?.Invoke(e.Entity.GetComponent<T>()); }, null);
+            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, userData, e => { onSucceeded?.Invoke(e as T); }, null);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="onFailed">失败回调</param>
         public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName, object userData, Action<T> onSucceeded, Action<string> onFailed) where T : EntityLogic
         {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, userData, e => { onSucceeded?.Invoke(e.Entity.GetComponent<T>()); }, e => { onFailed?.Invoke(e.ErrorMessage); });
+            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, userData, e => { onSucceeded?.Invoke(e as T); }, e => { onFailed?.Invoke(e); });
         }
     }
 }

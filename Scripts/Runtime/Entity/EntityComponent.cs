@@ -26,16 +26,10 @@ namespace UnityGameFramework.Runtime
         private EventComponent m_EventComponent = null;
 
         private readonly List<IEntity> m_InternalEntityResults = new List<IEntity>();
-
-        /// <summary>
-        /// 成功回调
-        /// </summary>
-        private readonly Dictionary<int, Action<ShowEntitySuccessEventArgs>> m_SucceededCallbacks = new Dictionary<int, Action<ShowEntitySuccessEventArgs>>();
-
-        /// <summary>
-        /// 失败回调
-        /// </summary>
-        private readonly Dictionary<int, Action<ShowEntityFailureEventArgs>> m_FailedCallbacks = new Dictionary<int, Action<ShowEntityFailureEventArgs>>();
+        
+        private readonly Dictionary<int, Action<EntityLogic>> m_SucceededCallbacks = new Dictionary<int, Action<EntityLogic>>();
+        
+        private readonly Dictionary<int, Action<string>> m_FailedCallbacks = new Dictionary<int, Action<string>>();
 
         [SerializeField]
         private bool m_EnableShowEntityUpdateEvent = false;
@@ -416,7 +410,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         /// <param name="onSucceeded">成功回调</param>
         /// <param name="onFailed">失败回调</param>
-        public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, object userData, Action<ShowEntitySuccessEventArgs> onSucceeded, Action<ShowEntityFailureEventArgs> onFailed)
+        public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, object userData, Action<EntityLogic> onSucceeded, Action<string> onFailed)
         {
             if (entityLogicType == null)
             {
@@ -1062,17 +1056,15 @@ namespace UnityGameFramework.Runtime
 
         private void OnShowEntitySuccess(object sender, GameFramework.Entity.ShowEntitySuccessEventArgs e)
         {
-            var eventArgs = ShowEntitySuccessEventArgs.Create(e);
-            InvokeShowEntitySucceededCallback(eventArgs);
-            m_EventComponent.Fire(this, eventArgs);
+            InvokeShowEntitySucceededCallback(e);
+            m_EventComponent.Fire(this, ShowEntitySuccessEventArgs.Create(e));
         }
 
         private void OnShowEntityFailure(object sender, GameFramework.Entity.ShowEntityFailureEventArgs e)
         {
             Log.Warning("Show entity failure, entity id '{0}', asset name '{1}', entity group name '{2}', error message '{3}'.", e.EntityId, e.EntityAssetName, e.EntityGroupName, e.ErrorMessage);
-            var eventArgs = ShowEntityFailureEventArgs.Create(e);
-            InvokeShowEntityFailedCallback(eventArgs);
-            m_EventComponent.Fire(this, eventArgs);
+            InvokeShowEntityFailedCallback(e);
+            m_EventComponent.Fire(this, ShowEntityFailureEventArgs.Create(e));
         }
 
         private void OnShowEntityUpdate(object sender, GameFramework.Entity.ShowEntityUpdateEventArgs e)
@@ -1085,26 +1077,26 @@ namespace UnityGameFramework.Runtime
             m_EventComponent.Fire(this, HideEntityCompleteEventArgs.Create(e));
         }
 
-        private void InvokeShowEntitySucceededCallback(ShowEntitySuccessEventArgs e)
+        private void InvokeShowEntitySucceededCallback(GameFramework.Entity.ShowEntitySuccessEventArgs e)
         {
-            if (!m_SucceededCallbacks.TryGetValue(e.Entity.Id, out Action<ShowEntitySuccessEventArgs> onSucceeded))
+            if (!m_SucceededCallbacks.TryGetValue(e.Entity.Id, out Action<EntityLogic> onSucceeded))
             {
                 return;
             }
 
-            onSucceeded(e);
+            onSucceeded(((Entity)e.Entity).GetComponent<EntityLogic>());
             m_SucceededCallbacks.Remove(e.Entity.Id);
         }
 
-        private void InvokeShowEntityFailedCallback(ShowEntityFailureEventArgs e)
+        private void InvokeShowEntityFailedCallback(GameFramework.Entity.ShowEntityFailureEventArgs e)
         {
-            if (!m_FailedCallbacks.TryGetValue(e.EntityId, out Action<ShowEntityFailureEventArgs> onFailed))
+            if (!m_FailedCallbacks.TryGetValue(e.EntityId, out Action<string> onFailed))
             {
                 return;
             }
 
-            onFailed(e);
-            m_SucceededCallbacks.Remove(e.EntityId);
+            onFailed(e.ErrorMessage);
+            m_FailedCallbacks.Remove(e.EntityId);
         }
     }
 }
