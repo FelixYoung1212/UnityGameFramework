@@ -112,6 +112,11 @@ namespace GameFramework.Resource
         /// <returns>资源实例</returns>
         public object Instantiate(object asset)
         {
+            if (asset == null)
+            {
+                throw new GameFrameworkException("Asset is invalid.");
+            }
+
             return m_AssetLoader.Instantiate(asset);
         }
 
@@ -126,6 +131,11 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("Asset is invalid.");
             }
 
+            if (m_AssetLoader == null)
+            {
+                return;
+            }
+
             m_AssetLoader.UnloadAsset(asset);
         }
 
@@ -136,9 +146,24 @@ namespace GameFramework.Resource
         /// <param name="asset">原始资源</param>
         public void ReleaseInstance(object instance, object asset)
         {
+            if (instance == null)
+            {
+                throw new GameFrameworkException("Instance is invalid.");
+            }
+
+            if (asset == null)
+            {
+                throw new GameFrameworkException("Asset is invalid.");
+            }
+
+            if (m_AssetLoader == null)
+            {
+                return;
+            }
+
             m_AssetLoader.ReleaseInstance(instance, asset);
         }
-        
+
         /// <summary>
         /// 异步加载场景。
         /// </summary>
